@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { UserEntity } from './user/entities/user.entity';
 import { StateModule } from './state/state.module';
 import { StateEntity } from './state/entities/state.entity';
+import { CityModule } from './city/city.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { StateEntity } from './state/entities/state.entity';
     }),
     UserModule,
     StateModule,
+    CityModule,
   ],
   controllers: [AppController],
   providers: [AppService],
