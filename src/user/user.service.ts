@@ -14,22 +14,22 @@ export class UserService {
   ){}
 
   async create(data: CreateUserDto): Promise<UserEntity> {
-    return this.userRepository.create(data);
+    return this.userRepository.save(data);
   }
 
   async findAll(): Promise<UserEntity[]> {
     return this.userRepository.find();
   }
 
-  findOne(id: string) {
+  findOne(id: number) {
     return `This action returns a #${id} user`;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: string) {
+  remove(id: number) {
     return `This action removes a #${id} user`;
   }
 }

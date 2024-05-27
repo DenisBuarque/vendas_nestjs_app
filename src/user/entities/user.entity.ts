@@ -3,8 +3,8 @@ import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateCol
 @Entity('users')
 export class UserEntity {
 
-    @PrimaryGeneratedColumn('uuid', {name: 'id'})
-    id: string
+    @PrimaryGeneratedColumn('rowid', {name: 'id'})
+    id: number
 
     @Column({type: 'varchar', name: 'name', length: 50, nullable: false})
     name: string
@@ -12,8 +12,11 @@ export class UserEntity {
     @Column({type: 'char', name: 'phone', length: 11, nullable: false})
     phone: string
 
-    @Column({type: 'char', name: 'cpf', length: 14, nullable: false})
+    @Column({type: 'char', name: 'cpf', length: 14, nullable: false, unique: true})
     cpf: string
+
+    @Column({ type: 'varchar', name: 'email', length: 50, nullable: false, unique: true})
+    email: string
 
     @Column({type: 'varchar', name: 'password', length: 255, nullable: false})
     password: string

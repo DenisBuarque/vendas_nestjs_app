@@ -1,10 +1,11 @@
-import { IsDate, IsEmail, IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength } from "class-validator"
+import { IsDate, IsEmail, IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength, MinLength, Validate } from "class-validator"
+
 
 export class CreateUserDto {
+
     @IsString()
     @IsNotEmpty()
     @MaxLength(50)
-    @IsUUID()
     readonly name: string
 
     @IsString()
@@ -25,6 +26,7 @@ export class CreateUserDto {
 
     @IsString()
     @IsNotEmpty()
+    @MinLength(6, { message: "A senha deve ter no minimo 6 caracteres"})
     @MaxLength(255)
     readonly password: string
 
