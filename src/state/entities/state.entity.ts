@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { CityEntity } from "src/city/entities/city.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'states'})
 export class StateEntity {
@@ -17,4 +18,7 @@ export class StateEntity {
 
     @UpdateDateColumn({ type: Date, name: 'updatedAt', nullable: true})
     updatedAt: Date
+
+    @OneToMany(() => CityEntity, (city) => city.state_id)
+    cities: CityEntity[]
 }

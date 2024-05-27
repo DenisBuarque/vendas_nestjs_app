@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { StateEntity } from "src/state/entities/state.entity";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'cities'})
 export class CityEntity {
@@ -9,12 +10,12 @@ export class CityEntity {
     @Column({type: 'varchar', name: 'name', length: 100, nullable: false, unique: true})
     name: string
 
-    @Column({type: 'varchar', name: 'name', length: 100})
-    state_id: number
-
     @CreateDateColumn({ type: Date, name: 'createdAt'})
     createdAt: Date
 
     @UpdateDateColumn({type: Date, name: 'updatedAt'})
     updatedAt: Date
+
+    @ManyToOne(() => StateEntity, (state) => state.cities)
+    state_id: StateEntity
 }
