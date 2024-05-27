@@ -17,5 +17,5 @@ export class CityEntity {
     updatedAt: Date
 
     @ManyToOne(() => StateEntity, (state) => state.cities)
-    state_id: StateEntity
+    state: StateEntity
 }

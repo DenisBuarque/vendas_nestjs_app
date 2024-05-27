@@ -1,4 +1,5 @@
-import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Address } from 'src/address/entities/address.entity'
+import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm'
 
 @Entity('users')
 export class UserEntity {
@@ -26,4 +27,8 @@ export class UserEntity {
 
     @UpdateDateColumn({type: Date, name: 'createdAd', nullable: true})
     updatedAt: Date
+
+    @OneToOne(() => Address)
+    @JoinColumn()
+    address: Address
 }
