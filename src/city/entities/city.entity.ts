@@ -7,8 +7,11 @@ export class CityEntity {
     @PrimaryGeneratedColumn('increment', { name: 'id'})
     id: number
 
-    @Column({type: 'varchar', name: 'name', length: 100, nullable: false, unique: true})
+    @Column({type: 'varchar', name: 'name', length: 100, nullable: false})
     name: string
+
+    @Column({ type: 'number', name: 'stateId'})
+    stateId: number
 
     @CreateDateColumn({ type: Date, name: 'createdAt'})
     createdAt: Date

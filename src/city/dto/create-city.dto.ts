@@ -10,7 +10,7 @@ export class CreateCityDto {
     @IsNumber()
     @IsNotEmpty()
     @MaxLength(100)
-    readonly state_id: number
+    readonly stateId: number
 
     @IsOptional()
     @IsDate()

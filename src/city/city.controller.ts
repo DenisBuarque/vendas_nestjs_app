@@ -18,6 +18,11 @@ export class CityController {
     return await this.cityService.findAll();
   }
 
+  @Get('/state/:id')
+  async getAllCitiesByStateId(@Param('id') id: number): Promise<CityEntity[]> {
+    return this.cityService.getAllCitiesByStateId(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.cityService.findOne(+id);
