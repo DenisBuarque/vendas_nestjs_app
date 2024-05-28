@@ -7,11 +7,10 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class AddressService {
-
   constructor(
     @InjectRepository(AddressEntity)
-    private addressRepository: Repository<AddressEntity>
-  ){}
+    private addressRepository: Repository<AddressEntity>,
+  ) {}
 
   async create(data: CreateAddressDto): Promise<AddressEntity> {
     return await this.addressRepository.save(data);

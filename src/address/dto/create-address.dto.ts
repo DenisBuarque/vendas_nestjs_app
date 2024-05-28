@@ -1,6 +1,11 @@
-import { IsDate, IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator"
+import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from "class-validator"
 
 export class CreateAddressDto {
+
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(9)
+    readonly zip_code: string
 
     @IsString()
     @IsNotEmpty()
@@ -16,6 +21,14 @@ export class CreateAddressDto {
     @IsNotEmpty()
     @MaxLength(50)
     readonly district: string
+
+    @IsNumber()
+    @IsNotEmpty()
+    readonly userId: number
+
+    @IsNumber()
+    @IsNotEmpty()
+    readonly cityId: number
 
     @IsOptional()
     @IsDate()
