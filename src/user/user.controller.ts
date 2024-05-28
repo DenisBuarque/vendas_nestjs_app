@@ -23,6 +23,11 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
+  @Get('/address/:id')
+  async getAddressByUserId(@Param('id') id: number): Promise<UserEntity> {
+    return await this.userService.getAddressByUserId(id);
+  }
+
   @Patch(':id')
   async update(@Param('id') id: number, @Body() data: UpdateUserDto) {
     return this.userService.update(+id, data);

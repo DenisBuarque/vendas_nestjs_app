@@ -25,7 +25,13 @@ export class UserService {
   }
 
   async findAll(): Promise<UserEntity[]> {
-    return this.userRepository.find();
+    return this.userRepository.find({select:['id', 'name', 'phone', 'email']});
+  }
+
+  async getAddressByUserId(id: number): Promise<UserEntity> {
+    return this.userRepository.findOne({
+      where: { id }, relations: ['address'], select: ['id', 'name','phone','email']
+    });
   }
 
   async findOne(id: number): Promise<UserEntity> {

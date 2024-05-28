@@ -28,17 +28,13 @@ export class AddressEntity {
 
     @Column({type: 'number', name: 'userId'})
     userId: number;
-
     @OneToOne(() => UserEntity, (user) => user.address)
-    @JoinColumn()
+    @JoinColumn({name: 'userId', referencedColumnName: 'id'})
     user: UserEntity
 
     @Column({type: 'number', name: 'cityId'})
     cityId: number
-    
     @ManyToOne(() => CityEntity, (city) => city.adresses)
-    @JoinColumn()
+    @JoinColumn({name: 'cityId', referencedColumnName: 'id'})
     city: CityEntity
-
-    
 }
