@@ -10,5 +10,6 @@ import { CityEntity } from './entities/city.entity';
   ],
   controllers: [CityController],
   providers: [CityService],
+  exports: [CityService]
 })
 export class CityModule {}
