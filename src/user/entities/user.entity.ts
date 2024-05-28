@@ -1,10 +1,10 @@
 import { AddressEntity } from 'src/address/entities/address.entity'
-import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm'
+import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, OneToOne } from 'typeorm'
 
 @Entity('users')
 export class UserEntity {
 
-    @PrimaryGeneratedColumn('rowid', {name: 'id'})
+    @PrimaryGeneratedColumn('increment', {name: 'id'})
     id: number
 
     @Column({type: 'varchar', name: 'name', length: 50, nullable: false})
@@ -29,6 +29,5 @@ export class UserEntity {
     updatedAt: Date
 
     @OneToOne(() => AddressEntity, (address) => address.user)
-    @JoinColumn()
     address: AddressEntity
 }

@@ -28,7 +28,7 @@ export class CreateUserDto {
     @IsNotEmpty()
     @MinLength(6, { message: "A senha deve ter no minimo 6 caracteres"})
     @MaxLength(255)
-    readonly password: string
+    password: string
 
     @IsOptional()
     @IsDate()

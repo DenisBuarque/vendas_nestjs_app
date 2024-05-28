@@ -9,6 +9,8 @@ import { StateModule } from './state/state.module';
 import { StateEntity } from './state/entities/state.entity';
 import { CityModule } from './city/city.module';
 import { AddressModule } from './address/address.module';
+import { AddressEntity } from './address/entities/address.entity';
+import { CityEntity } from './city/entities/city.entity';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { AddressModule } from './address/address.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       //entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      entities:[UserEntity, StateEntity],
+      entities:[UserEntity, AddressEntity, StateEntity, CityEntity],
       synchronize: true,
     }),
     UserModule,

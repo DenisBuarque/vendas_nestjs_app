@@ -4,7 +4,7 @@ import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Up
 @Entity({name: 'states'})
 export class StateEntity {
 
-    @PrimaryGeneratedColumn('rowid', { name: 'id'})
+    @PrimaryGeneratedColumn('increment', { name: 'id'})
     id: number
 
     @Column({type: 'varchar', name: 'name', length: 50, nullable: false, unique: true})
