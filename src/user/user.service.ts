@@ -25,12 +25,12 @@ export class UserService {
   }
 
   async findAll(): Promise<UserEntity[]> {
-    return this.userRepository.find({select:['id', 'name', 'phone', 'email']});
+    return this.userRepository.find();
   }
 
   async getAddressByUserId(id: number): Promise<UserEntity> {
     return this.userRepository.findOne({
-      where: { id }, relations: ['address'], select: ['id', 'name','phone','email']
+      where: { id }, relations: {address: {city: {state: true} } }, select: ['id', 'name','phone','email']
     });
   }
 
