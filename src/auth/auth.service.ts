@@ -10,21 +10,24 @@ import { UserEntity } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { AuthEntity } from './entities/auth.entity';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
-  async createToken(id: number, name: string, email: string) {
+  async createToken(user: UserEntity) {
     return this.jwtService.sign(
       {
-        sub: id,
-        username: name,
-        useremail: email,
+        sub: user.id,
+        username: user.name,
+        useremail: user.email,
+        userrole: user.role,
       },
       {
         issuer: 'login',
@@ -46,17 +49,20 @@ export class AuthService {
     }
   }
 
-  async singIn(email: string, password: string) {
-    const user = await this.userRepository.findOne({ where: { email } });
+  async login(data: CreateAuthDto) {
+    console.log('data login', data);
+    return ;
+
+    /*const user = await this.userRepository.findOne({where: { email: data.email}});
 
     if (!user) throw new UnauthorizedException('Você não tem autorização!');
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(data.password, user.password);
 
     if (!isMatch) throw new UnauthorizedException('Você não tem autorização!');
 
-    const token = await this.createToken(user.id, user.name, user.email);
+    const token = await this.createToken(user);
 
-    return { token, user };
+    return { token, user };*/
   }
 }

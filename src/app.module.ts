@@ -4,14 +4,13 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
-import { UserEntity } from './user/entities/user.entity';
 import { StateModule } from './state/state.module';
-import { StateEntity } from './state/entities/state.entity';
 import { CityModule } from './city/city.module';
 import { AddressModule } from './address/address.module';
-import { AddressEntity } from './address/entities/address.entity';
-import { CityEntity } from './city/entities/city.entity';
 import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './guards/role.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -34,8 +33,15 @@ import { AuthModule } from './auth/auth.module';
     CityModule,
     AddressModule,
     AuthModule,
+    JwtModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

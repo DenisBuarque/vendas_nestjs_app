@@ -1,4 +1,5 @@
 import { AddressEntity } from 'src/address/entities/address.entity'
+import { Role } from 'src/enums/role.enum'
 import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, OneToOne } from 'typeorm'
 
 @Entity('users')
@@ -21,6 +22,14 @@ export class UserEntity {
 
     @Column({type: 'varchar', name: 'password', length: 255, nullable: false})
     password: string
+
+    @Column({
+        type: "enum",
+        name: 'role',
+        enum: Role,
+        default: Role.User,
+    })
+    role: Role
 
     @CreateDateColumn({type: Date, name: 'createdAt', nullable: true})
     createdAd: Date
