@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
+import { UpdateResult } from 'typeorm';
 
 @Controller('user')
 export class UserController {
@@ -23,18 +24,18 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
-  @Get('/address/:id')
-  async getAddressByUserId(@Param('id') id: number): Promise<UserEntity> {
-    return await this.userService.getAddressByUserId(id);
-  }
-
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() data: UpdateUserDto) {
-    return this.userService.update(+id, data);
+  async update(@Param('id') id: number, @Body() data: UpdateUserDto): Promise<UpdateResult> {
+    return await this.userService.update(+id, data);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: number) {
     return this.userService.remove(+id);
+  }
+
+  @Get('/address/:id')
+  async getAddressByUserId(@Param('id') id: number): Promise<UserEntity> {
+    return await this.userService.getAddressByUser(id);
   }
 }

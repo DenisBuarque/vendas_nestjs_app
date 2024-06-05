@@ -21,11 +21,11 @@ export class CityEntity {
     @OneToMany(() => AddressEntity, (address) => address.city)
     adresses: AddressEntity[]
 
-    @CreateDateColumn({ type: Date, name: 'createdAt'})
-    createdAt: Date
+    @CreateDateColumn({ type: Date, name: 'createdAt', nullable: true})
+    createdAt?: Date
 
-    @UpdateDateColumn({type: Date, name: 'updatedAt'})
-    updatedAt: Date
+    @UpdateDateColumn({type: Date, name: 'updatedAt', nullable: true})
+    updatedAt?: Date
 
     
 }

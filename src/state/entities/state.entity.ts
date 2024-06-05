@@ -14,10 +14,10 @@ export class StateEntity {
     sigla: string
 
     @CreateDateColumn({type: Date, name: 'createdAt', nullable: true})
-    createdAt: Date
+    createdAt?: Date
 
     @UpdateDateColumn({ type: Date, name: 'updatedAt', nullable: true})
-    updatedAt: Date
+    updatedAt?: Date
 
     @OneToMany(() => CityEntity, (city) => city.state)
     cities: CityEntity[]

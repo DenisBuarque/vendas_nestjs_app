@@ -8,19 +8,9 @@ import { CityEntity } from './entities/city.entity';
 export class CityController {
   constructor(private readonly cityService: CityService) {}
 
-  @Post()
-  async create(@Body() createCityDto: CreateCityDto): Promise<CityEntity> {
-    return await this.cityService.create(createCityDto);
-  }
-
   @Get()
   async findAll(): Promise<CityEntity[]> {
     return await this.cityService.findAll();
-  }
-
-  @Get('/state/:id')
-  async getAllCitiesByStateId(@Param('id') id: number): Promise<CityEntity[]> {
-    return this.cityService.getAllCitiesByStateId(id);
   }
 
   @Get(':id')
@@ -28,13 +18,8 @@ export class CityController {
     return this.cityService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: number, @Body() updateCityDto: UpdateCityDto) {
-    return this.cityService.update(+id, updateCityDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.cityService.remove(+id);
+  @Get('/state/:id')
+  async getAllCitiesByStateId(@Param('id') id: number): Promise<CityEntity[]> {
+    return this.cityService.getAllCitiesByState(id);
   }
 }

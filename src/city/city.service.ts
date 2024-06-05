@@ -13,31 +13,19 @@ export class CityService {
     private cityRepository: Repository<CityEntity>,
   ){}
 
-  async create(data: CreateCityDto): Promise<CityEntity> {
-    return await this.cityRepository.save(data);
-  }
-
   async findAll(): Promise<CityEntity[]> {
     return await this.cityRepository.find();
-  }
-
-  async getAllCitiesByStateId(id: number): Promise<CityEntity[]> {
-    return await this.cityRepository.find({ where: {stateId: id}});
   }
 
   async findOne(id: number): Promise<CityEntity> {
     const city = await this.cityRepository.findOne({where: {id}});
     if(!city){
-      throw new NotFoundException("Cidade não encontrada!");
+      throw new NotFoundException("City not found!");
     }
     return city;
   }
 
-  update(id: number, updateCityDto: UpdateCityDto) {
-    return `This action updates a #${id} city`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} city`;
+  async getAllCitiesByState(id: number): Promise<CityEntity[]> {
+    return await this.cityRepository.find({ where: {stateId: id}});
   }
 }

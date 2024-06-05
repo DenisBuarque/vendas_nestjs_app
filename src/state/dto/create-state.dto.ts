@@ -9,7 +9,7 @@ export class CreateStateDto {
 
     @IsString()
     @IsNotEmpty()
-    @Min(2, { message: "O sigla deve conter no minimo 2 cadasteres"})
+    @Min(2, { message: "O sigla deve conter no minimo 2 caracteres"})
     @MaxLength(2)
     readonly sigla: string
 
