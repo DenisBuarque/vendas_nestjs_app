@@ -9,7 +9,7 @@ import { CityModule } from './city/city.module';
 import { AddressModule } from './address/address.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './guards/role.guard';
+import { RolesGuard } from './guards/roles.guard';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({

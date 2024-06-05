@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
@@ -10,8 +9,6 @@ import { UserEntity } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { AuthEntity } from './entities/auth.entity';
-import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -25,21 +22,21 @@ export class AuthService {
     return this.jwtService.sign(
       {
         sub: user.id,
-        username: user.name,
-        useremail: user.email,
-        userrole: user.role,
+        name: user.name,
+        email: user.email,
+        role: user.role,
       },
       {
         issuer: 'login',
         audience: 'users',
-        secret: 'OP7u8lbhVcfcBI08rVuHauGI8hvftLKN'
+        secret: process.env.JWT_SECRET,
       },
     );
   }
 
-  async verifyToken(token: string) {
+  verifyToken(token: string) {
     try {
-      const data = await this.jwtService.verify(token, {
+      const data = this.jwtService.verify(token, {
         audience: 'users',
         issuer: 'login',
       });
@@ -49,11 +46,9 @@ export class AuthService {
     }
   }
 
-  async login(data: CreateAuthDto) {
-    console.log('data login', data);
-    return ;
 
-    /*const user = await this.userRepository.findOne({where: { email: data.email}});
+  async login(data: CreateAuthDto) {
+    const user = await this.userRepository.findOne({where: { email: data.email}});
 
     if (!user) throw new UnauthorizedException('Você não tem autorização!');
 
@@ -63,6 +58,6 @@ export class AuthService {
 
     const token = await this.createToken(user);
 
-    return { token, user };*/
+    return { token, user };
   }
 }

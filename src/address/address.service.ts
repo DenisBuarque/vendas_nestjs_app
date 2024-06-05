@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,6 +21,10 @@ export class AddressService {
     await this.userService.findOne(data.userId);
     //verify city exist
     await this.cityService.findOne(data.cityId);
+
+    const user = await this.addressRepository.findOne({ where: {userId: data.userId}});
+    if(user) throw new BadRequestException('Please! Add another user.');
+
     //save data address
     return await this.addressRepository.save(data);
   }
