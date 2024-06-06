@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, Req, Res } from '@nestjs/common';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AddressEntity } from './entities/address.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { UserService } from 'src/user/user.service';
 import { CityService } from 'src/city/city.service';
 
@@ -33,15 +33,19 @@ export class AddressService {
     return await this.addressRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} address`;
+  async findOne(id: number): Promise<AddressEntity> {
+
+    const exist = await this.addressRepository.exists({ where: {id}});
+    if(!exist) throw new NotFoundException('Address not fount!');
+
+    return await this.addressRepository.findOne({ where: {id}, relations: { city: { state: true} }});
   }
 
-  update(id: number, updateAddressDto: UpdateAddressDto) {
-    return `This action updates a #${id} address`;
+  async update(id: number, data: UpdateAddressDto): Promise<UpdateResult> {
+
+    data.updatedAt = new Date();
+
+    return await this.addressRepository.update(id, data);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} address`;
-  }
 }

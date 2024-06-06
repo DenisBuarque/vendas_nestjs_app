@@ -17,6 +17,7 @@ import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/enums/role.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { UpdateResult } from 'typeorm';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('address')
@@ -37,19 +38,14 @@ export class AddressController {
 
   @Roles(Role.User)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<AddressEntity> {
     return this.addressService.findOne(+id);
   }
 
   @Roles(Role.User)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto) {
-    return this.addressService.update(+id, updateAddressDto);
-  }
+  async update(@Param('id') id: number, @Body() data: UpdateAddressDto): Promise<UpdateResult> {
 
-  @Roles(Role.Admin)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.addressService.remove(+id);
+    return await this.addressService.update(+id, data);
   }
 }

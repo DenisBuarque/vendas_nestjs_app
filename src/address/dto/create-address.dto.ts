@@ -32,9 +32,9 @@ export class CreateAddressDto {
 
     @IsOptional()
     @IsDate()
-    readonly createdAd?: Date
+    readonly createdAt?: Date
 
     @IsOptional()
     @IsDate()
-    readonly updatedAd?: Date
+    updatedAt?: Date
 }
