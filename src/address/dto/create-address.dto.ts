@@ -22,9 +22,9 @@ export class CreateAddressDto {
     @MaxLength(50)
     readonly district: string
 
+    @IsOptional()
     @IsNumber()
-    @IsNotEmpty()
-    readonly userId: number
+    userId?: number
 
     @IsNumber()
     @IsNotEmpty()

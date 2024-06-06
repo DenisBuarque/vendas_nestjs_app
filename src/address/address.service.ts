@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException, Req, Res } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,16 +22,17 @@ export class AddressService {
     private readonly cityService: CityService,
   ) {}
 
-  async create(data: CreateAddressDto): Promise<AddressEntity> {
+  async create(data: CreateAddressDto, userId: number): Promise<AddressEntity> {
     // verify user exist
-    await this.userService.findOne(data.userId);
+    await this.userService.findOne(userId);
     //verify city exist
     await this.cityService.findOne(data.cityId);
 
-    const user = await this.addressRepository.findOne({ where: {userId: data.userId}});
-    if(user) throw new BadRequestException('Please! Add another user.');
+    const user = await this.addressRepository.findOne({ where: { userId } });
+    if (user) throw new BadRequestException('Please! Add another user.');
 
-    //save data address
+    data.userId = userId;
+
     return await this.addressRepository.save(data);
   }
 
@@ -34,18 +41,22 @@ export class AddressService {
   }
 
   async findOne(id: number): Promise<AddressEntity> {
+    const exist = await this.addressRepository.exists({ where: { id } });
+    if (!exist) throw new NotFoundException('Address not fount!');
 
-    const exist = await this.addressRepository.exists({ where: {id}});
-    if(!exist) throw new NotFoundException('Address not fount!');
+    return await this.addressRepository.findOne({
+      where: { id },
+      relations: { city: { state: true } },
+    });
+  }
 
-    return await this.addressRepository.findOne({ where: {id}, relations: { city: { state: true} }});
+  async findAddressUser(id: number): Promise<AddressEntity> {
+    return await this.addressRepository.findOne({ where: { userId: id } });
   }
 
   async update(id: number, data: UpdateAddressDto): Promise<UpdateResult> {
-
     data.updatedAt = new Date();
 
     return await this.addressRepository.update(id, data);
   }
-
 }

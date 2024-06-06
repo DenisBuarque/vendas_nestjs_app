@@ -27,7 +27,7 @@ export class AddressEntity {
     updatedAt: Date
 
     @Column({type: 'number', name: 'userId'})
-    userId: number;
+    userId?: number;
 
     @OneToOne(() => UserEntity, (user) => user.address)
     @JoinColumn()
