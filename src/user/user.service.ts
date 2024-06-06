@@ -35,12 +35,11 @@ export class UserService {
   }
 
   async findOne(id: number): Promise<UserEntity> {
-    const exist = await this.userRepository.exists({ where: { id } });
-    if (!exist) throw new NotFoundException('User not found!');
-
     const user = await this.userRepository.findOne({
       where: { id },
     });
+
+    if (!user) throw new NotFoundException('User not found!');
 
     return user;
   }

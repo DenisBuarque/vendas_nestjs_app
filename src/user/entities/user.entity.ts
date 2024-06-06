@@ -1,5 +1,5 @@
-import { AddressEntity } from 'src/address/entities/address.entity'
-import { Role } from 'src/enums/role.enum'
+import { AddressEntity } from '../../address/entities/address.entity'
+import { Role } from '../../enums/role.enum'
 import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, OneToOne } from 'typeorm'
 
 @Entity('users')
@@ -32,7 +32,7 @@ export class UserEntity {
     role: Role
 
     @CreateDateColumn({type: Date, name: 'createdAt', nullable: true})
-    createdAd: Date
+    createdAt: Date
 
     @UpdateDateColumn({type: Date, name: 'createdAd', nullable: true})
     updatedAt: Date
