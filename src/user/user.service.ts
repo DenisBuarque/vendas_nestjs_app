@@ -6,7 +6,7 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
-import { Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 
@@ -45,8 +45,8 @@ export class UserService {
   }
 
   async update(id: number, data: UpdateUserDto): Promise<UpdateResult> {
-    const exist = await this.userRepository.exists({ where: { id } });
-    if (!exist) throw new NotFoundException('User not found!');
+
+    await this.findOne(id);
 
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(data.password, salt);
@@ -58,10 +58,8 @@ export class UserService {
     return user;
   }
 
-  async remove(id: number) {
-    const exist = await this.userRepository.exists({ where: { id } });
-    if (!exist) throw new NotFoundException('User not found!');
-
+  async remove(id: number): Promise<DeleteResult> {
+    await this.findOne(id);
     return await this.userRepository.delete(id);
   }
 
