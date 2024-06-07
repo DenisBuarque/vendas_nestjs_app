@@ -2,8 +2,6 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  Req,
-  Res,
 } from '@nestjs/common';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
@@ -23,13 +21,11 @@ export class AddressService {
   ) {}
 
   async create(data: CreateAddressDto, userId: number): Promise<AddressEntity> {
-    // verify user exist
+
+    //verify user exist
     await this.userService.findOne(userId);
     //verify city exist
     await this.cityService.findOne(data.cityId);
-
-    const user = await this.addressRepository.findOne({ where: { userId } });
-    if (user) throw new BadRequestException('Please! Add another user.');
 
     data.userId = userId;
 
@@ -41,13 +37,14 @@ export class AddressService {
   }
 
   async findOne(id: number): Promise<AddressEntity> {
-    const exist = await this.addressRepository.exists({ where: { id } });
-    if (!exist) throw new NotFoundException('Address not fount!');
-
-    return await this.addressRepository.findOne({
+    const address = await this.addressRepository.findOne({
       where: { id },
       relations: { city: { state: true } },
     });
+
+    if (!address) throw new NotFoundException('Address not fount!');
+
+    return address;
   }
 
   async findAddressUser(id: number): Promise<AddressEntity> {
