@@ -7,7 +7,6 @@ import { CityService } from '../city/city.service';
 import { UserService } from '../user/user.service';
 import { Role } from '../enums/role.enum';
 import { CreateAddressDto } from './dto/create-address.dto';
-import { UserId } from 'src/decorators/userId.decorator';
 
 const listAddressEntity = [
   {
@@ -96,6 +95,9 @@ const listUserEntity = [
 
 describe('AddressService', () => {
   let service: AddressService;
+  let userService: UserService;
+  let cityService: CityService;
+
   let repository: Repository<AddressEntity>;
 
   beforeEach(async () => {
@@ -130,6 +132,8 @@ describe('AddressService', () => {
     }).compile();
 
     service = module.get<AddressService>(AddressService);
+    userService = module.get<UserService>(UserService);
+    cityService = module.get<CityService>(CityService);
     repository = module.get<Repository<AddressEntity>>(
       getRepositoryToken(AddressEntity),
     );

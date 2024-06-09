@@ -9,6 +9,8 @@ import { CityModule } from './city/city.module';
 import { AddressModule } from './address/address.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { JwtModule } from '@nestjs/jwt';
     AddressModule,
     AuthModule,
     JwtModule,
+    CategoryModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [
