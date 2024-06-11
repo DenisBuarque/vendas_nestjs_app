@@ -7,7 +7,7 @@ import { Role } from 'src/enums/role.enum';
 import { Roles } from 'src/decorators/role.decorator';
 import { ProductEntity } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Injectable()
@@ -29,23 +29,23 @@ export class ProductService {
 
   @Roles(Role.Admin)
   async findAll(): Promise<ProductEntity[]> {
-    return this.productRepository.find();
+    return this.productRepository.find({ order: { id: "DESC"}, relations: { category: true}});
   }
 
 
   @Roles(Role.Admin)
   async findOne(id: number): Promise<ProductEntity> {
-    const product = await this.productRepository.findOne({ where: {id}});
+    const product = await this.productRepository.findOne({ where: {id}, relations: { category: true}});
     if(!product) throw new NotFoundException('Produto not found!');
     return product;
   }
 
   @Roles(Role.Admin)
-  async update(id: number, data: UpdateProductDto): Promise<UpdateResult> {
+  async update(id: number, data: UpdateProductDto): Promise<ProductEntity> {
     await this.findOne(id);
     try {
       const product = await this.productRepository.update(id, data);
-      return product;
+      return this.findOne(id);
     } catch (error) {
       throw new BadRequestException('Erro update product data!');
     }

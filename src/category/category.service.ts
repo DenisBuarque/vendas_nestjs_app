@@ -37,6 +37,7 @@ export class CategoryService {
   async update(id: number, data: UpdateCategoryDto): Promise<CategoryEntity> {
     await this.findOne(id);
     try {
+      data.updatedAt = new Date();
       await this.categoryRepository.update(id, data);
       return await this.findOne(id);
     } catch (error) {

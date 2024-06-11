@@ -7,7 +7,6 @@ export class CreateProductDto {
     @MaxLength(50, { message: 'Digite no máximo 50 caracteres.'})
     readonly name: string
 
-    @IsString()
     @IsNotEmpty()
     @IsNumber({maxDecimalPlaces: 2})
     readonly price: number
@@ -20,9 +19,13 @@ export class CreateProductDto {
     @IsString()
     image?: string
 
+    @IsNumber()
+    @IsNotEmpty()
+    categoryId: number
+
     @IsOptional()
     @IsDate()
-    readonly createAt?: Date
+    readonly createdAt?: Date
 
     @IsOptional()
     @IsDate()
