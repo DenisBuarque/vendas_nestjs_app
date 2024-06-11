@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException, UseGuards } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { Role } from 'src/enums/role.enum';
-import { Roles } from 'src/decorators/role.decorator';
+import { AuthGuard } from '../guards/auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { Role } from '..//enums/role.enum';
+import { Roles } from '../decorators/role.decorator';
 import { ProductEntity } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
@@ -44,7 +44,7 @@ export class ProductService {
   async update(id: number, data: UpdateProductDto): Promise<ProductEntity> {
     await this.findOne(id);
     try {
-      const product = await this.productRepository.update(id, data);
+      await this.productRepository.update(id, data);
       return this.findOne(id);
     } catch (error) {
       throw new BadRequestException('Erro update product data!');
