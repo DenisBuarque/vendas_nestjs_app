@@ -60,6 +60,22 @@ describe('CategoryService', () => {
       expect(result).toEqual(listCategories[0]);
       expect(repository.save).toHaveBeenCalledTimes(1);
     });
+
+    it('Test: Error BadRequestException create category', async () => {
+      const data: CreateCategoryDto = {
+        name: undefined,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+  
+      jest.spyOn(repository, 'save').mockRejectedValueOnce(new Error());
+  
+      try {
+        await service.create(data);
+      } catch (error) {
+        expect(error).toBeInstanceOf(BadRequestException);
+      }
+    });
   });
 
   describe('findAll', () => {
@@ -112,6 +128,22 @@ describe('CategoryService', () => {
       const result = await service.update(1, data);
       expect(result).toEqual(listCategories[0]);
       expect(repository.update).toHaveBeenCalledTimes(1);
+    });
+
+    it('Test: Error BadRequestException create category', async () => {
+      const data: UpdateCategoryDto = {
+        name: undefined,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+  
+      jest.spyOn(repository, 'save').mockRejectedValueOnce(new Error());
+  
+      try {
+        await service.update(1, data);
+      } catch (error) {
+        expect(error).toBeInstanceOf(BadRequestException);
+      }
     });
   });
 

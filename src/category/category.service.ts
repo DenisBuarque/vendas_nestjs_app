@@ -20,7 +20,7 @@ export class CategoryService {
     try {
       return await this.categoryRepository.save(data);
     } catch (error) {
-      throw new BadRequestException('Erro create category.');
+      throw new BadRequestException('Something bad happened');
     }
   }
 
@@ -40,7 +40,7 @@ export class CategoryService {
       await this.categoryRepository.update(id, data);
       return await this.findOne(id);
     } catch (error) {
-      throw new BadRequestException('Erro apdate category data!');
+      throw new BadRequestException('Erro update category data!');
     }
   }
 
