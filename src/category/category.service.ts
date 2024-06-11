@@ -7,7 +7,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from './entities/category.entity';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 
 @Injectable()
 export class CategoryService {
@@ -20,7 +20,7 @@ export class CategoryService {
     try {
       return await this.categoryRepository.save(data);
     } catch (error) {
-      throw new BadRequestException('Ocorreu um error ao realizar o cadastro!');
+      throw new BadRequestException('Erro create category.');
     }
   }
 
@@ -34,11 +34,11 @@ export class CategoryService {
     return user;
   }
 
-  async update(id: number, data: UpdateCategoryDto): Promise<UpdateResult> {
+  async update(id: number, data: UpdateCategoryDto): Promise<CategoryEntity> {
     await this.findOne(id);
     try {
-      const user = await this.categoryRepository.update(id, data);
-      return user;
+      await this.categoryRepository.update(id, data);
+      return await this.findOne(id);
     } catch (error) {
       throw new BadRequestException('Erro apdate category data!');
     }

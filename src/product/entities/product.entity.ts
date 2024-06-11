@@ -1,25 +1,25 @@
-import { CategoryEntity } from "src/category/entities/category.entity";
-import { Collection, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { CategoryEntity } from "../../category/entities/category.entity";
+import { Column, CreateDateColumn, Double, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-Entity({ name: 'products'})
+@Entity({ name: 'products'})
 export class ProductEntity {
 
-    @PrimaryGeneratedColumn('increment', { type: 'number', name: 'id', unsigned: true})
+    @PrimaryGeneratedColumn('increment', { type: 'int', name: 'id' })
     id: number
 
     @Column({ type: 'varchar', name: 'name', length: 50, nullable: false, unique: true})
     name: string
 
-    @Column({ type: 'number', name: 'price', length: 10, nullable: false })
+    @Column({ type: 'decimal', name: 'price', precision: 10, scale: 2, nullable: false })
     price: number
 
     @Column({ type: 'text', name: 'description'})
     description: string
 
-    @Column({ type: 'string', name: 'image' })
+    @Column({ type: 'varchar', name: 'image', length: 255 })
     image?: string
 
-    @CreateDateColumn({ type: Date, name: 'createAt'})
+    @CreateDateColumn({ type: Date, name: 'createdAt'})
     createdAt?: Date
 
     @UpdateDateColumn({ type: Date, name: 'updatedAt'})

@@ -1,13 +1,13 @@
-import { IsDate, IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator"
+import { IsDate, IsDefined, IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator"
 
 export class CreateCategoryDto {
 
     @IsString()
     @IsNotEmpty()
+    @MaxLength(30, { message: 'Digite no máximo 30 caracteres.'})
     readonly name: string
 
     @IsOptional()
-    @MaxLength(30, { message: 'Digite no máximo 30 caracteres.'})
     @IsDate()
     readonly createdAt?: Date
 
