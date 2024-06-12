@@ -13,14 +13,14 @@ import { DeleteResult, Repository } from 'typeorm';
 export class CategoryService {
   constructor(
     @InjectRepository(CategoryEntity)
-    private categoryRepository: Repository<CategoryEntity>,
+    private readonly categoryRepository: Repository<CategoryEntity>,
   ) {}
 
   async create(data: CreateCategoryDto): Promise<CategoryEntity> {
     try {
       return await this.categoryRepository.save(data);
     } catch (error) {
-      throw new BadRequestException('Something bad happened');
+      throw new BadRequestException('Error add category.');
     }
   }
 

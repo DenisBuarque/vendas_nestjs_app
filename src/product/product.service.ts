@@ -8,6 +8,7 @@ import { Roles } from '../decorators/role.decorator';
 import { ProductEntity } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
+import { CategoryService } from '../category/category.service';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Injectable()
@@ -16,6 +17,7 @@ export class ProductService {
   constructor(
     @InjectRepository(ProductEntity)
     private productRepository: Repository<ProductEntity>,
+    private readonly categoryService: CategoryService,
   ){}
 
   @Roles(Role.Admin)
@@ -29,9 +31,15 @@ export class ProductService {
 
   @Roles(Role.Admin)
   async findAll(): Promise<ProductEntity[]> {
-    return this.productRepository.find({ order: { id: "DESC"}, relations: { category: true}});
+    return await this.productRepository.find({ order: { id: "DESC"}, relations: { category: true}});
   }
 
+  @Roles(Role.Admin)
+  async productByCategory(id: number): Promise<ProductEntity[]> {
+    const category = await this.categoryService.findOne(id);
+    if(!category) throw new NotFoundException("Category not found!");
+    return await this.productRepository.find({ where: {categoryId: id}});
+  }
 
   @Roles(Role.Admin)
   async findOne(id: number): Promise<ProductEntity> {

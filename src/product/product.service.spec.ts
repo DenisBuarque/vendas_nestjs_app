@@ -5,34 +5,63 @@ import { ProductEntity } from './entities/product.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { JwtService } from '@nestjs/jwt';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { CategoryService } from '../category/category.service';
+import { CategoryEntity } from 'src/category/entities/category.entity';
 
 const listProducts = [
   {
     id: 1,
-    name: "Produto",
+    name: 'Produto',
     price: 10,
-    description: "Descrição do produto",
-    categoryId: 1
-  },{
-    id: 2,
-    name: "Produto 2",
-    price: 20,
-    description: "Descrição do produto",
-    categoryId: 2
-  },{
-    id: 3,
-    name: "Produto 3",
-    price: 30,
-    description: "Descrição do produto",
-    categoryId: 3
+    description: 'Descrição do produto',
+    categoryId: 1,
   },
-]
+  {
+    id: 2,
+    name: 'Produto 2',
+    price: 20,
+    description: 'Descrição do produto',
+    categoryId: 2,
+  },
+  {
+    id: 3,
+    name: 'Produto 3',
+    price: 30,
+    description: 'Descrição do produto',
+    categoryId: 3,
+  },
+];
+
+const listCategory: CategoryEntity[] = [
+  {
+    id: 1,
+    name: 'Informática',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    products:[]
+  },
+  {
+    id: 2,
+    name: 'Limpeza',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    products:[]
+  },
+  {
+    id: 3,
+    name: 'Auto',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    products:[]
+  },
+];
 
 describe('ProductService', () => {
   let service: ProductService;
   let repository: Repository<ProductEntity>;
+  let category: CategoryService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -50,12 +79,20 @@ describe('ProductService', () => {
             update: jest.fn().mockResolvedValue(listProducts[0]),
             remove: jest.fn().mockResolvedValue(ProductEntity),
             delete: jest.fn().mockResolvedValue(ProductEntity),
+            productByCategory: jest.fn().mockResolvedValue(listProducts),
+          },
+        },
+        {
+          provide: CategoryService,
+          useValue: {
+            findOne: jest.fn().mockResolvedValue(listCategory[0]),
           },
         },
       ],
     }).compile();
 
     service = module.get<ProductService>(ProductService);
+    category = module.get<CategoryService>(CategoryService);
     repository = module.get<Repository<ProductEntity>>(
       getRepositoryToken(ProductEntity),
     );
@@ -64,14 +101,15 @@ describe('ProductService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
     expect(repository).toBeDefined();
+    expect(category).toBeDefined();
   });
 
   describe('create', () => {
     it('Test: function create success', async () => {
       const data: CreateProductDto = {
-        name: "Produto",
+        name: 'Produto',
         price: 10,
-        description: "Descrição do produto",
+        description: 'Descrição do produto',
         categoryId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -86,19 +124,35 @@ describe('ProductService', () => {
       const data: CreateProductDto = {
         name: undefined,
         price: 10,
-        description: "Descrição do produto",
+        description: 'Descrição do produto',
         categoryId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-  
+
       jest.spyOn(repository, 'save').mockRejectedValueOnce(new Error());
-  
+
       try {
         await service.create(data);
       } catch (error) {
         expect(error).toBeInstanceOf(BadRequestException);
       }
+    });
+  });
+
+  describe('productByCategory', () => {
+    it('Test: function productByCategory success', async () => {
+      jest.spyOn(category, 'findOne').mockResolvedValue(listCategory[0]);
+      const result = await service.productByCategory(listCategory[0].id);
+      expect(result).toEqual(listProducts);
+      expect(repository.find).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw NotFoundException if category not found', async () => {
+      jest.spyOn(category, 'findOne').mockResolvedValue(undefined);
+      await expect(service.productByCategory(1)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -115,9 +169,7 @@ describe('ProductService', () => {
         throw new Error('Can not list products');
       });
       // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(repository.find).rejects.toThrow(
-        'Can not list products',
-      );
+      await expect(repository.find).rejects.toThrow('Can not list products');
     });
   });
 
@@ -143,7 +195,7 @@ describe('ProductService', () => {
       const data: UpdateProductDto = {
         name: 'Produto',
         price: 10,
-        description: "Descrição do produto",
+        description: 'Descrição do produto',
         categoryId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -158,14 +210,14 @@ describe('ProductService', () => {
       const data: UpdateProductDto = {
         name: undefined,
         price: 10,
-        description: "Descrição do produto",
+        description: 'Descrição do produto',
         categoryId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-  
+
       jest.spyOn(repository, 'update').mockRejectedValueOnce(new Error());
-  
+
       try {
         await service.update(1, data);
       } catch (error) {

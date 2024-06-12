@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ExecutionContext,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,6 +10,8 @@ import { UserEntity } from '../user/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { UpdatePasswordDTO } from './dto/update-password.dto';
+import { UserId } from 'src/decorators/userId.decorator';
 
 @Injectable()
 export class AuthService {
@@ -45,7 +48,6 @@ export class AuthService {
       throw new BadRequestException(error);
     }
   }
-
 
   async login(data: CreateAuthDto) {
     const user = await this.userRepository.findOne({where: { email: data.email}});
