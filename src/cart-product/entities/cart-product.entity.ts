@@ -8,7 +8,7 @@ export class CartProductEntity {
     @PrimaryGeneratedColumn('increment', { type: 'int', name: 'id' })
     id: number
 
-    @Column({ type: 'decimal', name: 'amount', precision: 10, scale: 2, nullable: false })
+    @Column({ type: 'int', name: 'amount', nullable: false })
     amount: number
 
     @CreateDateColumn({ type: Date, name: 'createdAt', nullable: true})

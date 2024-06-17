@@ -2,7 +2,7 @@ import { IsDate, IsNotEmpty, IsNumber, IsOptional } from "class-validator"
 
 export class CreateCartProductDto {
 
-    @IsNumber({maxDecimalPlaces: 2})
+    @IsNumber()
     @IsNotEmpty()
     readonly amount: number
 
