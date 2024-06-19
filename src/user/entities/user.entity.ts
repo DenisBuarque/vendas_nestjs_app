@@ -1,4 +1,4 @@
-import { CartEntity } from 'src/cart/entities/cart.entity'
+import { CartEntity } from '../../cart/entities/cart.entity'
 import { AddressEntity } from '../../address/entities/address.entity'
 import { Role } from '../../enums/role.enum'
 import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, OneToOne, OneToMany } from 'typeorm'

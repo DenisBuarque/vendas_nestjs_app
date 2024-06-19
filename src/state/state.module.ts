@@ -3,7 +3,7 @@ import { StateService } from './state.service';
 import { StateController } from './state.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StateEntity } from './entities/state.entity';
-import { CityEntity } from 'src/city/entities/city.entity';
+import { CityEntity } from '../city/entities/city.entity';
 
 @Module({
   imports: [
