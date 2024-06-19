@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { CartProductEntity } from './entities/cart-product.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ProductService } from '../product/product.service';
+import { CreateCartDto } from 'src/cart/dto/create-cart.dto';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 const listCarts = [
   {
@@ -75,8 +77,9 @@ describe('CartProductService', () => {
         },{
           provide: getRepositoryToken(CartProductEntity),
           useValue: {
-            findOne: jest.fn(),
-            save: jest.fn(),
+            insertCartProduct: jest.fn().mockResolvedValue(listProducts[0]),
+            findOne: jest.fn().mockResolvedValue(listCartProducts[0]),
+            save: jest.fn().mockResolvedValue(listCartProducts[0]),
             delete: jest.fn().mockResolvedValue(listCartProducts[0]),
           }
         }
@@ -109,5 +112,61 @@ describe('CartProductService', () => {
       await expect(repository.delete).rejects.toThrow('Error delete');
     });
   });
-  
+
+  describe('createCartProduct', () => {
+    it('should return create cart producto', async () => {
+      const data = {
+        //id: 1,
+        amount: 2,
+        createAd: "2024-06-19T12:57:03.140Z",
+        updatedAt: "2024-06-19T13:36:54.000Z",
+        cartId: 3,
+        productId: 1,
+      }
+
+      const cartId = 1;
+      const result = await service.createCartProduct({
+        amount: data.amount,
+        productId: data.productId
+      }, cartId);
+
+      expect(result).toEqual(listCartProducts[0]);
+    });
+
+    it('should return error create cart producto', async () => {
+      const data = {
+        amount: 1,
+        createAd: "2024-06-19T12:57:03.140Z",
+        updatedAt: "2024-06-19T13:36:54.000Z",
+        cartId: 3,
+        productId: 1,
+      };
+
+      jest.spyOn(repository, 'save').mockRejectedValueOnce(new Error());
+
+      try {
+        await service.createCartProduct(data, undefined);
+      } catch (error) {
+        expect(error).toBeInstanceOf(BadRequestException);
+      }
+    });
+
+  });
+
+  describe('findOne', () => {
+    it('should result findone cartProduto', async () => {
+
+      const result = await service.verifyCartProduct(listCartProducts[0].id, listCarts[0].id);
+      expect(result).toEqual(listCartProducts[0]);
+      expect(repository.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw NotFoundException findOne cart product error', async () => {
+      jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
+      await expect(service.verifyCartProduct(listCartProducts[0].id, undefined)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });
+
 });

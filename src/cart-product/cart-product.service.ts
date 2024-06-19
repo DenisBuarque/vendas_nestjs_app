@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartProductEntity } from './entities/cart-product.entity';
 import { DeleteResult, Repository } from 'typeorm';
@@ -27,11 +27,16 @@ export class CartProductService {
   }
 
   async createCartProduct (data: InsertCartDTO, cartId: number): Promise<CartProductEntity> {
-    return await this.cartProductRepository.save({
-      amount: data.amount,
-      productId: data.productId,
-      cartId
-    });
+    try {
+      return await this.cartProductRepository.save({
+        amount: data.amount,
+        productId: data.productId,
+        cartId
+      });  
+    } catch (error) {
+      throw new BadRequestException();
+    }
+    
   }
 
   async insertCartProduct (data: InsertCartDTO, cart: CartEntity): Promise<CartProductEntity> {

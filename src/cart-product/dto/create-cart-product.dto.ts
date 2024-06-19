@@ -20,5 +20,5 @@ export class CreateCartProductDto {
 
     @IsOptional()
     @IsDate()
-    readonly updatedAd?: Date
+    updatedAt?: Date
 }
