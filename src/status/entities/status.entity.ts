@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { PaymentEntity } from "src/payment/entities/payment.entity";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'status'})
-export class Status {
+export class StatusEntity {
     @PrimaryGeneratedColumn('increment', {type: "int", name: "id"})
     id: number
 
@@ -13,4 +14,7 @@ export class Status {
 
     @UpdateDateColumn({ type: Date, name: "updatedAt"})
     updatedAt?: Date
+
+    @ManyToOne(() => PaymentEntity, (payment) => payment.status)
+    payments: PaymentEntity[];
 }
