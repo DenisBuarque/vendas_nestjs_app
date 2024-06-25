@@ -9,7 +9,8 @@ export class OrderProductController {
 
   @Post()
   create(@Body() createOrderProductDto: CreateOrderProductDto) {
-    return this.orderProductService.create(createOrderProductDto);
+    //return this.orderProductService.createOrderProduct(createOrderProductDto);
+    return;
   }
 
   @Get()

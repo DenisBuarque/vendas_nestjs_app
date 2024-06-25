@@ -27,7 +27,7 @@ export class OrderProductEntity {
     updatedAt: Date
 
     @OneToMany(() => OrderEntity, (order) => order.orderProduct)
-    @JoinColumn({ name: "paymentId", referencedColumnName: "id"})
+    @JoinColumn({ name: "orderId", referencedColumnName: "id"})
     order: OrderEntity;
 
     @OneToMany(() => ProductEntity, (product) => product.orderProduct)

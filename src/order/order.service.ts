@@ -7,6 +7,7 @@ import { CreateOrderPaymentDTO } from './dto/create-order-payment.dto';
 import { PaymentService } from 'src/payment/payment.service';
 import { PaymentEntity } from 'src/payment/entities/payment.entity';
 import { CartService } from 'src/cart/cart.service';
+import { OrderProductService } from 'src/order-product/order-product.service';
 
 @Injectable()
 export class OrderService {
@@ -15,12 +16,13 @@ export class OrderService {
     private readonly orderRepository: Repository<OrderEntity>,
     private readonly paymentService: PaymentService,
     private readonly cartService: CartService,
+    private readonly orderProductService: OrderProductService
   ){}
 
   async createOrder(data: CreateOrderPaymentDTO, id: number, userId: number) {
     const payment: PaymentEntity = await this.paymentService.createPayment(data);
 
-    const order = this.orderRepository.save({
+    const order = await this.orderRepository.save({
       userId: userId,
       addressId: data.addressId,
       currentDate: new Date(),
@@ -29,7 +31,12 @@ export class OrderService {
 
     const cart = await this.cartService.findOne(userId);
 
-    return 'This action adds a new order payment';
+    cart.cartProducts.forEach((cartProduct) => {
+ 
+      this.orderProductService.createOrderProduct(cartProduct.id, order.id, 10, cartProduct.amount);
+    });
+
+    return 'This action adds a new order product';
   }
 
   findAll() {
