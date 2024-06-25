@@ -2,14 +2,16 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { PaymentEntity } from './entities/payment.entity';
+import { CreateOrderPaymentDTO } from 'src/order/dto/create-order-payment.dto';
 
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Post()
-  create(@Body() createPaymentDto: CreatePaymentDto) {
-    return this.paymentService.create(createPaymentDto);
+  create(@Body() data: CreateOrderPaymentDTO): Promise<PaymentEntity> {
+    return this.paymentService.createPayment(data);
   }
 
   @Get()

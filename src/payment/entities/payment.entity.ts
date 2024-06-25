@@ -1,5 +1,4 @@
 import { OrderEntity } from "src/order/entities/order.entity";
-import { StateEntity } from "src/state/entities/state.entity";
 import { StatusEntity } from "src/status/entities/status.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, TableInheritance, UpdateDateColumn } from "typeorm";
 
@@ -22,8 +21,8 @@ export abstract class PaymentEntity {
     @Column({ type: 'decimal', name: 'finalPrice', precision: 10, scale: 2, nullable: false })
     finalPrice: number
     
-    @Column({ type: "varchar", name: "type", nullable: false})
-    type: string
+    @Column({ type: "varchar", name: "typePay", nullable: false})
+    typePay: string
 
     @CreateDateColumn({ type: Date, name: "createdAt", nullable: true})
     createdAt: Date

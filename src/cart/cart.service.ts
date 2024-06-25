@@ -14,8 +14,8 @@ export class CartService {
     private readonly cartProductService: CartProductService,
   ) {}
 
-  async find(userId: number): Promise<CartEntity[]> {
-    return await this.cartRepository.find({
+  async findOne(userId: number): Promise<CartEntity> {
+    return await this.cartRepository.findOne({
       where: { userId },
       relations: {
         cartProducts: {

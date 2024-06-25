@@ -32,7 +32,7 @@ export class AddressController {
     return await this.addressService.create(data, userId);
   }
 
-  @Roles(Role.User)
+  @Roles(Role.Admin, Role.User)
   @Get()
   async findAll(): Promise<AddressEntity[]> {
     return await this.addressService.findAll();

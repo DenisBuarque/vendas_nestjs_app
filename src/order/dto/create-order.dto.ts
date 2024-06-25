@@ -23,5 +23,5 @@ export class CreateOrderDto {
 
   @IsOptional()
   @IsDate()
-  updatedAt: Date;
+  updatedAt?: Date;
 }

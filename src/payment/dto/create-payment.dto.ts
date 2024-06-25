@@ -21,7 +21,7 @@ export class CreatePaymentDto {
 
     @IsString()
     @IsNotEmpty()
-    readonly type: string
+    readonly typePay: string
 
     @IsOptional()
     @IsDate()

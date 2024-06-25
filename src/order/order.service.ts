@@ -1,11 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { OrderEntity } from './entities/order.entity';
+import { Repository } from 'typeorm';
+import { CreateOrderPaymentDTO } from './dto/create-order-payment.dto';
+import { PaymentService } from 'src/payment/payment.service';
+import { PaymentEntity } from 'src/payment/entities/payment.entity';
+import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class OrderService {
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+  constructor(
+    @InjectRepository(OrderEntity)
+    private readonly orderRepository: Repository<OrderEntity>,
+    private readonly paymentService: PaymentService,
+    private readonly cartService: CartService,
+  ){}
+
+  async createOrder(data: CreateOrderPaymentDTO, id: number, userId: number) {
+    const payment: PaymentEntity = await this.paymentService.createPayment(data);
+
+    const order = this.orderRepository.save({
+      userId: userId,
+      addressId: data.addressId,
+      currentDate: new Date(),
+      paymentId: payment.id,
+    });
+
+    const cart = await this.cartService.findOne(userId);
+
+    return 'This action adds a new order payment';
   }
 
   findAll() {

@@ -26,8 +26,8 @@ export class CartController {
 
   @Roles(Role.Admin, Role.User)
   @Get()
-  async find(@UserId() userId: number): Promise<CartEntity[]> {
-    return await this.cartService.find(userId);
+  async findOne(@UserId() userId: number): Promise<CartEntity> {
+    return await this.cartService.findOne(userId);
   }
 
   @Roles(Role.Admin, Role.User)
