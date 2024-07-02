@@ -8,6 +8,7 @@ import { PaymentService } from 'src/payment/payment.service';
 import { PaymentEntity } from 'src/payment/entities/payment.entity';
 import { CartService } from 'src/cart/cart.service';
 import { OrderProductService } from 'src/order-product/order-product.service';
+import { ProductService } from 'src/product/product.service';
 
 @Injectable()
 export class OrderService {
@@ -16,11 +17,13 @@ export class OrderService {
     private readonly orderRepository: Repository<OrderEntity>,
     private readonly paymentService: PaymentService,
     private readonly cartService: CartService,
-    private readonly orderProductService: OrderProductService
-  ){}
+    private readonly orderProductService: OrderProductService,
+    private readonly productService: ProductService
+  ) {}
 
-  async createOrder(data: CreateOrderPaymentDTO, id: number, userId: number) {
-    const payment: PaymentEntity = await this.paymentService.createPayment(data);
+  async createOrder(data: CreateOrderPaymentDTO, userId: number): Promise<OrderEntity> {
+    const payment: PaymentEntity =
+      await this.paymentService.createPayment(data);
 
     const order = await this.orderRepository.save({
       userId: userId,
@@ -31,12 +34,22 @@ export class OrderService {
 
     const cart = await this.cartService.findOne(userId);
 
-    cart.cartProducts.forEach((cartProduct) => {
- 
-      this.orderProductService.createOrderProduct(cartProduct.id, order.id, 10, cartProduct.amount);
-    });
+    const products = await this.productService.findProductById(
+      cart.cartProducts.map((cartProduct) => cartProduct.productId),
+    )
 
-    return 'This action adds a new order product';
+    await Promise.all(
+      cart.cartProducts?.map((cartProduct) => {
+        this.orderProductService.createOrderProduct(
+          cartProduct.id,
+          order.id,
+          products.find((product) => product.id === cartProduct.productId)?.price || 0,
+          cartProduct.amount,
+        );
+      }),
+    );
+
+    return order;
   }
 
   findAll() {

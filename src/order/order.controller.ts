@@ -14,9 +14,9 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Roles(Role.Admin, Role.User)
-  @Post('/cart/:id')
-  async createOrder(@Body() data: CreateOrderPaymentDTO, @Param('id') id: number, @UserId() userId: number) {
-    return await this.orderService.createOrder(data, id, userId);
+  @Post()
+  async createOrder(@Body() data: CreateOrderPaymentDTO, @UserId() userId: number) {
+    return await this.orderService.createOrder(data, userId);
   }
 
   @Get()
