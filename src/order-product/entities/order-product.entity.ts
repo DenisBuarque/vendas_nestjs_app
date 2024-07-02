@@ -1,6 +1,6 @@
 import { OrderEntity } from "src/order/entities/order.entity";
 import { ProductEntity } from "src/product/entities/product.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: "order_products"})
 export class OrderProductEntity {
@@ -26,7 +26,7 @@ export class OrderProductEntity {
     @UpdateDateColumn({ type: Date, name: "updatedAt", nullable: true })
     updatedAt: Date
 
-    @OneToMany(() => OrderEntity, (order) => order.orderProduct)
+    @ManyToOne(() => OrderEntity, (order) => order.orderProduct)
     @JoinColumn({ name: "orderId", referencedColumnName: "id"})
     order: OrderEntity;
 

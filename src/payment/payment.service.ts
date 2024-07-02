@@ -5,6 +5,8 @@ import { PaymentEntity } from './entities/payment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateOrderPaymentDTO } from 'src/order/dto/create-order-payment.dto';
 import { Status } from 'src/enums/status.enum';
+import { ProductEntity } from 'src/product/entities/product.entity';
+import { CartEntity } from 'src/cart/entities/cart.entity';
 
 @Injectable()
 export class PaymentService {
@@ -13,25 +15,41 @@ export class PaymentService {
     private readonly repositoyPayment: Repository<PaymentEntity>,
   ) {}
 
-  async createPayment(data: CreateOrderPaymentDTO): Promise<PaymentEntity> {
+  async createPayment(
+    data: CreateOrderPaymentDTO,
+    products: ProductEntity[],
+    cart: CartEntity,
+  ): Promise<PaymentEntity> {
+    const finalPrice = cart.cartProducts
+      ?.map((cartProduct) => {
+        const product = products.find(
+          (product) => product.id === cartProduct.productId,
+        );
+        if (product) {
+          return cartProduct.amount * product.price;
+        }
+
+        return 0;
+      })
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
     if (data.amountPayment) {
       const paymentCredtCard = {
         statusId: Status.Done,
-        price: 0,
+        price: finalPrice,
         discount: 0,
-        finalPrice: 0,
-        typePay: "payment-credt-card",
+        finalPrice: finalPrice,
+        typePay: 'payment-credt-card',
         amountPayment: data.amountPayment,
       };
       return await this.repositoyPayment.save(paymentCredtCard);
     } else if (data.code && data.datePayment) {
       const paymentPix = {
         statusId: Status.Done,
-        price: 0,
+        price: finalPrice,
         discount: 0,
-        finalPrice: 0,
-        typePay: "payment-pix",
+        finalPrice: finalPrice,
+        typePay: 'payment-pix',
         code: data.code,
         datePayment: data.datePayment,
       };
@@ -43,19 +61,4 @@ export class PaymentService {
     );
   }
 
-  findAll() {
-    return `This action returns all payment`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
-  }
-
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} payment`;
-  }
 }

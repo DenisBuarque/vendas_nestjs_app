@@ -37,6 +37,6 @@ export class ProductEntity {
     @OneToMany(() => CartProductEntity, (cartProduct) => cartProduct.product)
     cartProducts: CartProductEntity[]
 
-    @OneToMany(() => OrderProductEntity, (orderProduct) => orderProduct.product)
+    @ManyToOne(() => OrderProductEntity, (orderProduct) => orderProduct.product)
     orderProduct: OrderProductEntity[];
 }

@@ -7,6 +7,7 @@ import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/enums/role.enum';
 import { CreateOrderPaymentDTO } from './dto/create-order-payment.dto';
 import { UserId } from 'src/decorators/userId.decorator';
+import { OrderEntity } from './entities/order.entity';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('order')
@@ -19,23 +20,9 @@ export class OrderController {
     return await this.orderService.createOrder(data, userId);
   }
 
+  @Roles(Role.Admin, Role.User)
   @Get()
-  findAll() {
-    return this.orderService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
+  async findOrdersByUser(@UserId() userId: number): Promise<OrderEntity[]>{
+    return await this.orderService.findOrdersByUser(userId)
   }
 }
