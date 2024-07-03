@@ -60,5 +60,4 @@ export class PaymentService {
       'Amount Payment or code and date payment not fount.',
     );
   }
-
 }

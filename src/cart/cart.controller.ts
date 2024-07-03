@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { CartService } from './cart.service';;
+import { CartService } from './cart.service';
 import { InsertCartDTO } from './dto/insert-cart.dto';
 import { UserId } from '../decorators/userId.decorator';
 import { AuthGuard } from '../guards/auth.guard';
@@ -38,7 +38,10 @@ export class CartController {
 
   @Roles(Role.Admin, Role.User)
   @Patch()
-  async updateProductCart(@Body() data: UpdateCartDto, @UserId() userId: number): Promise<CartEntity> {
+  async updateProductCart(
+    @Body() data: UpdateCartDto,
+    @UserId() userId: number,
+  ): Promise<CartEntity> {
     return await this.cartService.updateProductCart(data, userId);
   }
 
@@ -50,8 +53,10 @@ export class CartController {
 
   @Roles(Role.Admin, Role.User)
   @Delete('/product/:id')
-  async deleteProductCart(@Param('id') id: number, @UserId() userId: number): Promise<DeleteResult> {
+  async deleteProductCart(
+    @Param('id') id: number,
+    @UserId() userId: number,
+  ): Promise<DeleteResult> {
     return await this.cartService.deleteProductCart(id, userId);
   }
-
 }

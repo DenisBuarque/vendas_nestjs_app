@@ -18,7 +18,7 @@ export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
   ) {}
 
   async createToken(user: UserEntity) {
@@ -50,7 +50,9 @@ export class AuthService {
   }
 
   async login(data: CreateAuthDto) {
-    const user = await this.userRepository.findOne({where: { email: data.email}});
+    const user = await this.userRepository.findOne({
+      where: { email: data.email },
+    });
 
     if (!user) throw new UnauthorizedException('Você não tem autorização!');
 

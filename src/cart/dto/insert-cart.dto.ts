@@ -1,12 +1,11 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class InsertCartDTO {
+  @IsNumber()
+  @IsNotEmpty()
+  productId: number;
 
-    @IsNumber()
-    @IsNotEmpty()
-    productId: number
-
-    @IsNumber()
-    @IsNotEmpty()
-    amount: number
+  @IsNumber()
+  @IsNotEmpty()
+  amount: number;
 }

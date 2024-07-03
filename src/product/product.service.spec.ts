@@ -40,21 +40,21 @@ const listCategory: CategoryEntity[] = [
     name: 'Informática',
     createdAt: new Date(),
     updatedAt: new Date(),
-    products:[]
+    products: [],
   },
   {
     id: 2,
     name: 'Limpeza',
     createdAt: new Date(),
     updatedAt: new Date(),
-    products:[]
+    products: [],
   },
   {
     id: 3,
     name: 'Auto',
     createdAt: new Date(),
     updatedAt: new Date(),
-    products:[]
+    products: [],
   },
 ];
 

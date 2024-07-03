@@ -67,9 +67,9 @@ describe('CategoryService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-  
+
       jest.spyOn(repository, 'save').mockRejectedValueOnce(new Error());
-  
+
       try {
         await service.create(data);
       } catch (error) {
@@ -91,9 +91,7 @@ describe('CategoryService', () => {
         throw new Error('Can not list categories');
       });
       // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(repository.find).rejects.toThrow(
-        'Can not list categories',
-      );
+      await expect(repository.find).rejects.toThrow('Can not list categories');
     });
   });
 
@@ -136,9 +134,9 @@ describe('CategoryService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-  
+
       jest.spyOn(repository, 'save').mockRejectedValueOnce(new Error());
-  
+
       try {
         await service.update(1, data);
       } catch (error) {
@@ -164,5 +162,4 @@ describe('CategoryService', () => {
       );
     });
   });
-
 });

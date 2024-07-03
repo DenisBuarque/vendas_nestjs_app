@@ -15,8 +15,8 @@ export class StateService {
   }
 
   async findOne(id: number): Promise<StateEntity> {
-    const state = await this.stateRepository.findOne({ where: {id}});
-    if(!state) throw new NotFoundException("State not found!");
+    const state = await this.stateRepository.findOne({ where: { id } });
+    if (!state) throw new NotFoundException('State not found!');
 
     return state;
   }

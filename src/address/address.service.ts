@@ -21,7 +21,6 @@ export class AddressService {
   ) {}
 
   async create(data: CreateAddressDto, userId: number): Promise<AddressEntity> {
-
     //verify user exist
     await this.userService.findOne(userId);
     //verify city exist

@@ -25,12 +25,12 @@ export class CartService {
     });
   }
 
-  async clearCart (userId: number): Promise<DeleteResult> {
+  async clearCart(userId: number): Promise<DeleteResult> {
     const cart = await this.verifyCartActive(userId);
 
     await this.cartRepository.save({
       ...cart,
-      active: false
+      active: false,
     });
 
     return {
@@ -73,7 +73,10 @@ export class CartService {
     return cart;
   }
 
-  async updateProductCart(data: UpdateCartDto, userId: number): Promise<CartEntity> {
+  async updateProductCart(
+    data: UpdateCartDto,
+    userId: number,
+  ): Promise<CartEntity> {
     const cart = await this.verifyCartActive(userId).catch(async () => {
       return this.createCart(userId);
     });
@@ -82,7 +85,10 @@ export class CartService {
     return cart;
   }
 
-  async deleteProductCart(productId: number, userId: number): Promise<DeleteResult> {
+  async deleteProductCart(
+    productId: number,
+    userId: number,
+  ): Promise<DeleteResult> {
     const cart = await this.verifyCartActive(userId);
     return await this.cartProductService.deleteProductCart(productId, cart.id);
   }

@@ -7,7 +7,7 @@ export class StateController {
   constructor(private readonly stateService: StateService) {}
 
   @Get()
-  async findAll(): Promise<StateEntity[]>  {
+  async findAll(): Promise<StateEntity[]> {
     return await this.stateService.findAll();
   }
 
@@ -15,5 +15,4 @@ export class StateController {
   async findOne(@Param('id') id: number): Promise<StateEntity> {
     return await this.stateService.findOne(+id);
   }
-
 }

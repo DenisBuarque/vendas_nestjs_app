@@ -6,9 +6,7 @@ import { StateEntity } from './entities/state.entity';
 import { CityEntity } from '../city/entities/city.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([StateEntity, CityEntity]),
-  ],
+  imports: [TypeOrmModule.forFeature([StateEntity, CityEntity])],
   controllers: [StateController],
   providers: [StateService],
 })

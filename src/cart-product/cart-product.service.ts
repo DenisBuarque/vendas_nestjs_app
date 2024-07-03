@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartProductEntity } from './entities/cart-product.entity';
 import { DeleteResult, Repository } from 'typeorm';
@@ -12,7 +16,7 @@ export class CartProductService {
   constructor(
     @InjectRepository(CartProductEntity)
     private readonly cartProductRepository: Repository<CartProductEntity>,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
   ) {}
 
   async verifyCartProduct(
@@ -26,36 +30,45 @@ export class CartProductService {
     return cartProduct;
   }
 
-  async createCartProduct (data: InsertCartDTO, cartId: number): Promise<CartProductEntity> {
+  async createCartProduct(
+    data: InsertCartDTO,
+    cartId: number,
+  ): Promise<CartProductEntity> {
     try {
       return await this.cartProductRepository.save({
         amount: data.amount,
         productId: data.productId,
-        cartId
-      });  
+        cartId,
+      });
     } catch (error) {
       throw new BadRequestException();
     }
-    
   }
 
-  async insertCartProduct (data: InsertCartDTO, cart: CartEntity): Promise<CartProductEntity> {
-
+  async insertCartProduct(
+    data: InsertCartDTO,
+    cart: CartEntity,
+  ): Promise<CartProductEntity> {
     await this.productService.findOne(data.productId);
 
-    const cartProduct = await this.verifyCartProduct(data.productId, cart.id).catch(() => undefined);
+    const cartProduct = await this.verifyCartProduct(
+      data.productId,
+      cart.id,
+    ).catch(() => undefined);
     if (!cartProduct) {
       return this.createCartProduct(data, cart.id);
     }
 
     return this.cartProductRepository.save({
       ...cartProduct,
-      amount: data.amount + data.amount
+      amount: data.amount + data.amount,
     });
   }
 
-  async updateCartProduct (data: UpdateCartDto, cart: CartEntity): Promise<CartProductEntity> {
-
+  async updateCartProduct(
+    data: UpdateCartDto,
+    cart: CartEntity,
+  ): Promise<CartProductEntity> {
     await this.productService.findOne(data.productId);
 
     const cartProduct = await this.verifyCartProduct(data.productId, cart.id);
@@ -66,8 +79,10 @@ export class CartProductService {
     });
   }
 
-  async deleteProductCart(productId: number, cartId: number): Promise<DeleteResult> {
-    return await this.cartProductRepository.delete({productId, cartId});
+  async deleteProductCart(
+    productId: number,
+    cartId: number,
+  ): Promise<DeleteResult> {
+    return await this.cartProductRepository.delete({ productId, cartId });
   }
-
 }

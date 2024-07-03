@@ -1,20 +1,25 @@
-import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import {
+  IsBoolean,
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateCartDto {
+  @IsNumber()
+  @IsNotEmpty()
+  readonly userId: number;
 
-    @IsNumber()
-    @IsNotEmpty()
-    readonly userId: number
+  @IsBoolean()
+  @IsNotEmpty()
+  readonly active: boolean;
 
-    @IsBoolean()
-    @IsNotEmpty()
-    readonly active: boolean
+  @IsOptional()
+  @IsDate()
+  readonly createdAt?: Date;
 
-    @IsOptional()
-    @IsDate()
-    readonly createdAt?: Date
-
-    @IsOptional()
-    @IsDate()
-    readonly updatedAt?: Date
+  @IsOptional()
+  @IsDate()
+  readonly updatedAt?: Date;
 }

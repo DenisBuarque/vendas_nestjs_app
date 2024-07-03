@@ -4,8 +4,8 @@ import { IsDate, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 export class CreateOrderPaymentDTO {
   @IsNotEmpty()
   @IsNumber()
-  readonly addressId: number
-  
+  readonly addressId: number;
+
   @IsOptional()
   @IsNumber({ maxDecimalPlaces: 2 })
   readonly amountPayment?: number;

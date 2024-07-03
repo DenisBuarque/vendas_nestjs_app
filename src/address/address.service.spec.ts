@@ -215,7 +215,9 @@ describe('AddressService', () => {
         throw new Error('Address not found');
       });
       // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(service.create(data, 3)).rejects.toThrow('Address not found');
+      await expect(service.create(data, 3)).rejects.toThrow(
+        'Address not found',
+      );
     });
   });
 });

@@ -14,7 +14,7 @@ export class CreateOrderProductDto {
   readonly amount: number;
 
   @IsNotEmpty()
-  @IsNumber({maxDecimalPlaces: 2})
+  @IsNumber({ maxDecimalPlaces: 2 })
   readonly price: number;
 
   @IsOptional()

@@ -11,7 +11,8 @@ const listCityEntity = [
     stateId: 147,
     createdAt: new Date(),
     updatedAt: new Date(),
-  },{
+  },
+  {
     id: 2,
     name: 'Arapiraca',
     stateId: 147,
@@ -70,9 +71,7 @@ describe('CityService', () => {
         throw new Error('City not found');
       });
       // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(repository.find).rejects.toThrow(
-        'City not found',
-      );
+      await expect(repository.find).rejects.toThrow('City not found');
     });
   });
 
@@ -110,9 +109,7 @@ describe('CityService', () => {
         throw new Error('Cities not found');
       });
       // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(repository.find).rejects.toThrow(
-        'Cities not found',
-      );
+      await expect(repository.find).rejects.toThrow('Cities not found');
     });
   });
 });

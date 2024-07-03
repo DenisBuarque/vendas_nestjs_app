@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  BadRequestException,
+} from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -11,7 +20,7 @@ export class ProductController {
 
   @Post()
   create(@Body() data: CreateProductDto): Promise<ProductEntity> {
-      return this.productService.create(data);
+    return this.productService.create(data);
   }
 
   @Get()
@@ -30,7 +39,10 @@ export class ProductController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() data: UpdateProductDto): Promise<ProductEntity> {
+  update(
+    @Param('id') id: string,
+    @Body() data: UpdateProductDto,
+  ): Promise<ProductEntity> {
     return this.productService.update(+id, data);
   }
 

@@ -7,14 +7,23 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class OrderProductService {
-
   constructor(
     @InjectRepository(OrderProductEntity)
-    private readonly orderProductRepository: Repository<OrderProductEntity>
-  ){}
+    private readonly orderProductRepository: Repository<OrderProductEntity>,
+  ) {}
 
-  async createOrderProduct(productId: number, orderId: number, price: number, amount: number): Promise<OrderProductEntity> {
-    return await this.orderProductRepository.save({productId, orderId, price, amount});
+  async createOrderProduct(
+    productId: number,
+    orderId: number,
+    price: number,
+    amount: number,
+  ): Promise<OrderProductEntity> {
+    return await this.orderProductRepository.save({
+      productId,
+      orderId,
+      price,
+      amount,
+    });
   }
 
   findAll() {

@@ -11,29 +11,29 @@ const listCarts = [
   {
     id: 1,
     active: true,
-    createdAt: "2024-06-19T12:55:08.717Z",
-    updatedAt: "2024-06-19T12:55:08.717Z",
+    createdAt: '2024-06-19T12:55:08.717Z',
+    updatedAt: '2024-06-19T12:55:08.717Z',
     userId: 3,
-  }
+  },
 ];
 
 const listCartProducts = [
   {
     id: 1,
     amount: 2,
-    createAd: "2024-06-19T12:57:03.140Z",
-    updatedAt: "2024-06-19T13:36:54.000Z",
+    createAd: '2024-06-19T12:57:03.140Z',
+    updatedAt: '2024-06-19T13:36:54.000Z',
     cartId: 3,
     productId: 1,
   },
   {
     id: 1,
     amount: 2,
-    createAd: "2024-06-19T12:57:03.140Z",
-    updatedAt: "2024-06-19T13:36:54.000Z",
+    createAd: '2024-06-19T12:57:03.140Z',
+    updatedAt: '2024-06-19T13:36:54.000Z',
     cartId: 3,
     productId: 2,
-  }
+  },
 ];
 
 const listProducts = [
@@ -74,15 +74,16 @@ describe('CartProductService', () => {
           useValue: {
             findOne: jest.fn().mockResolvedValue(listProducts[0]),
           },
-        },{
+        },
+        {
           provide: getRepositoryToken(CartProductEntity),
           useValue: {
             insertCartProduct: jest.fn().mockResolvedValue(listProducts[0]),
             findOne: jest.fn().mockResolvedValue(listCartProducts[0]),
             save: jest.fn().mockResolvedValue(listCartProducts[0]),
             delete: jest.fn().mockResolvedValue(listCartProducts[0]),
-          }
-        }
+          },
+        },
       ],
     }).compile();
 
@@ -101,7 +102,10 @@ describe('CartProductService', () => {
 
   describe('deleteProductCart', () => {
     it('should return delete result', async () => {
-      const result = await service.deleteProductCart(listProducts[0].id, listCartProducts[0].id);
+      const result = await service.deleteProductCart(
+        listProducts[0].id,
+        listCartProducts[0].id,
+      );
       expect(result).toEqual(listCartProducts[0]);
     });
 
@@ -118,17 +122,20 @@ describe('CartProductService', () => {
       const data = {
         //id: 1,
         amount: 2,
-        createAd: "2024-06-19T12:57:03.140Z",
-        updatedAt: "2024-06-19T13:36:54.000Z",
+        createAd: '2024-06-19T12:57:03.140Z',
+        updatedAt: '2024-06-19T13:36:54.000Z',
         cartId: 3,
         productId: 1,
-      }
+      };
 
       const cartId = 1;
-      const result = await service.createCartProduct({
-        amount: data.amount,
-        productId: data.productId
-      }, cartId);
+      const result = await service.createCartProduct(
+        {
+          amount: data.amount,
+          productId: data.productId,
+        },
+        cartId,
+      );
 
       expect(result).toEqual(listCartProducts[0]);
     });
@@ -136,8 +143,8 @@ describe('CartProductService', () => {
     it('should return error create cart producto', async () => {
       const data = {
         amount: 1,
-        createAd: "2024-06-19T12:57:03.140Z",
-        updatedAt: "2024-06-19T13:36:54.000Z",
+        createAd: '2024-06-19T12:57:03.140Z',
+        updatedAt: '2024-06-19T13:36:54.000Z',
         cartId: 3,
         productId: 1,
       };
@@ -150,23 +157,23 @@ describe('CartProductService', () => {
         expect(error).toBeInstanceOf(BadRequestException);
       }
     });
-
   });
 
   describe('findOne', () => {
     it('should result findone cartProduto', async () => {
-
-      const result = await service.verifyCartProduct(listCartProducts[0].id, listCarts[0].id);
+      const result = await service.verifyCartProduct(
+        listCartProducts[0].id,
+        listCarts[0].id,
+      );
       expect(result).toEqual(listCartProducts[0]);
       expect(repository.findOne).toHaveBeenCalledTimes(1);
     });
 
     it('should throw NotFoundException findOne cart product error', async () => {
       jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
-      await expect(service.verifyCartProduct(listCartProducts[0].id, undefined)).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.verifyCartProduct(listCartProducts[0].id, undefined),
+      ).rejects.toThrow(NotFoundException);
     });
   });
-
 });

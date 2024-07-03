@@ -45,7 +45,6 @@ export class UserService {
   }
 
   async update(id: number, data: UpdateUserDto): Promise<UpdateResult> {
-
     await this.findOne(id);
 
     const salt = await bcrypt.genSalt();
@@ -69,5 +68,9 @@ export class UserService {
       relations: { address: { city: { state: true } } },
       select: ['id', 'name', 'phone', 'email'],
     });
+  }
+
+  async getUserByToken(id: number): Promise<UserEntity>  {
+    return this.userRepository.findOne({ where: { id } });
   }
 }

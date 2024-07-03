@@ -91,9 +91,7 @@ describe('UserService', () => {
         throw new Error('Users not found');
       });
       // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(repository.find).rejects.toThrow(
-        'Users not found',
-      );
+      await expect(repository.find).rejects.toThrow('Users not found');
     });
   });
 
@@ -137,7 +135,6 @@ describe('UserService', () => {
     });
 
     it('Test: function create error', async () => {
-
       const data: CreateUserDto = {
         name: '',
         phone: '82954876322',
@@ -155,9 +152,7 @@ describe('UserService', () => {
         throw new Error('User not found');
       });
       // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(service.create(data)).rejects.toThrow(
-        'User not found',
-      );
+      await expect(service.create(data)).rejects.toThrow('User not found');
     });
   });
 
@@ -182,7 +177,6 @@ describe('UserService', () => {
     });
 
     it('Test: function update error', async () => {
-
       const data: CreateUserDto = {
         name: '',
         phone: '82954876322',
@@ -200,9 +194,7 @@ describe('UserService', () => {
         throw new Error('User not found');
       });
       // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(service.update(1, data)).rejects.toThrow(
-        'User not found',
-      );
+      await expect(service.update(1, data)).rejects.toThrow('User not found');
     });
   });
 

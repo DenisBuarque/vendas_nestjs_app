@@ -37,15 +37,15 @@ export class OrderEntity {
   updatedAt: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.orders)
-  @JoinColumn({ name: "userId", referencedColumnName: "id"})
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: UserEntity;
 
   @ManyToOne(() => AddressEntity, (address) => address.orders)
-  @JoinColumn({ name: "addressId", referencedColumnName: "id"})
+  @JoinColumn({ name: 'addressId', referencedColumnName: 'id' })
   address: AddressEntity;
 
   @ManyToOne(() => PaymentEntity, (payment) => payment.orders)
-  @JoinColumn({ name: "paymentId", referencedColumnName: "id"})
+  @JoinColumn({ name: 'paymentId', referencedColumnName: 'id' })
   payment: PaymentEntity;
 
   @OneToMany(() => OrderProductEntity, (orderProduct) => orderProduct.order)

@@ -1,3 +1,3 @@
 export enum Status {
-    Done = 1,
-  }
+  Done = 1,
+}

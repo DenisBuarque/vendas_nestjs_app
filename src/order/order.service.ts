@@ -70,7 +70,7 @@ export class OrderService {
       relations: {
         address: true,
         orderProduct: {
-          product: true
+          product: true,
         },
         payment: true,
       },
@@ -82,5 +82,4 @@ export class OrderService {
 
     return orders;
   }
-
 }

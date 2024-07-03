@@ -1,6 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
-import { UpdateOrderDto } from './dto/update-order.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/role.decorator';
@@ -16,13 +21,16 @@ export class OrderController {
 
   @Roles(Role.Admin, Role.User)
   @Post()
-  async createOrder(@Body() data: CreateOrderPaymentDTO, @UserId() userId: number) {
+  async createOrder(
+    @Body() data: CreateOrderPaymentDTO,
+    @UserId() userId: number,
+  ) {
     return await this.orderService.createOrder(data, userId);
   }
 
   @Roles(Role.Admin, Role.User)
   @Get()
-  async findOrdersByUser(@UserId() userId: number): Promise<OrderEntity[]>{
-    return await this.orderService.findOrdersByUser(userId)
+  async findOrdersByUser(@UserId() userId: number): Promise<OrderEntity[]> {
+    return await this.orderService.findOrdersByUser(userId);
   }
 }

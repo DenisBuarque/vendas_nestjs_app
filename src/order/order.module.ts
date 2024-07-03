@@ -14,7 +14,7 @@ import { ProductModule } from 'src/product/product.module';
     PaymentModule,
     CartModule,
     OrderProductModule,
-    ProductModule
+    ProductModule,
   ],
   controllers: [OrderController],
   providers: [OrderService],
