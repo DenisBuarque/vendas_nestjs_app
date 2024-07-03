@@ -4,6 +4,7 @@ import {
   Post,
   Body,
   UseGuards,
+  Param,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -39,5 +40,11 @@ export class OrderController {
   @Get()
   async findOrdersByUser(@UserId() userId: number): Promise<OrderEntity[]> {
     return await this.orderService.findOrdersByUser(userId);
+  }
+
+  @Roles(Role.Admin)
+  @Get(":id")
+  async findOne (@Param("id") id: number): Promise<OrderEntity> {
+    return await this.orderService.findOne(id);
   }
 }
