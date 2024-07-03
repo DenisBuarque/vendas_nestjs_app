@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateOrderDto } from './dto/update-order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderEntity } from './entities/order.entity';
 import { Repository } from 'typeorm';
@@ -9,7 +8,7 @@ import { PaymentEntity } from 'src/payment/entities/payment.entity';
 import { CartService } from 'src/cart/cart.service';
 import { OrderProductService } from 'src/order-product/order-product.service';
 import { ProductService } from 'src/product/product.service';
-import { truncate } from 'fs/promises';
+import { ReturnOrderDTO } from './dto/return-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -21,6 +20,22 @@ export class OrderService {
     private readonly orderProductService: OrderProductService,
     private readonly productService: ProductService,
   ) {}
+
+  async findAllOrders(): Promise<ReturnOrderDTO[]> {
+    const orders = (
+      await this.orderRepository.find({
+        relations: {
+          user: true,
+        },
+      })
+    ).map((order) => new ReturnOrderDTO(order));
+
+    if (!orders || orders.length === 0) {
+      throw new NotFoundException('orders not found.');
+    }
+
+    return orders;
+  }
 
   async createOrder(
     data: CreateOrderPaymentDTO,

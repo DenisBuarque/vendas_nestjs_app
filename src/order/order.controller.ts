@@ -13,11 +13,18 @@ import { Role } from 'src/enums/role.enum';
 import { CreateOrderPaymentDTO } from './dto/create-order-payment.dto';
 import { UserId } from 'src/decorators/userId.decorator';
 import { OrderEntity } from './entities/order.entity';
+import { ReturnOrderDTO } from './dto/return-order.dto';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
+
+  @Roles(Role.Admin)
+  @Get("/list")
+  async findAllOrders(): Promise<ReturnOrderDTO[]> {
+    return this.orderService.findAllOrders();
+  }
 
   @Roles(Role.Admin, Role.User)
   @Post()
