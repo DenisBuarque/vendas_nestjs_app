@@ -14,10 +14,6 @@ const listUserEntity = [
     phone: '82954876322',
     cpf: '042.457.678-65',
     email: 'moanna@gmail.com',
-    password: '$2b$10$bewo1N.Sk5h7ZQvlcXT30uF.gmbL0hggvgB4o4BRdWjuPP.X.Z9L6',
-    role: Role.User,
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
     id: 2,
@@ -25,10 +21,6 @@ const listUserEntity = [
     phone: '82954876322',
     cpf: '042.457.678-65',
     email: 'denis@gmail.com',
-    password: '$2b$10$bewo1N.Sk5h7ZQvlcXT30uF.gmbL0hggvgB4o4BRdWjuPP.X.Z9L6',
-    role: Role.User,
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   {
     id: 3,
@@ -36,10 +28,6 @@ const listUserEntity = [
     phone: '82954876322',
     cpf: '042.457.678-65',
     email: 'marley@gmail.com',
-    password: '$2b$10$bewo1N.Sk5h7ZQvlcXT30uF.gmbL0hggvgB4o4BRdWjuPP.X.Z9L6',
-    role: Role.User,
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
 ];
 

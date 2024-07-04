@@ -17,6 +17,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { UpdateResult } from 'typeorm';
 import { UserId } from '../decorators/userId.decorator';
+import { ReturnAddressDTO } from './dto/return-address.dto';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('address')
@@ -34,7 +35,7 @@ export class AddressController {
 
   @Roles(Role.Admin, Role.User)
   @Get()
-  async findAll(): Promise<AddressEntity[]> {
+  async findAll(): Promise<ReturnAddressDTO[]> {
     return await this.addressService.findAll();
   }
 
@@ -46,7 +47,7 @@ export class AddressController {
 
   @Roles(Role.User)
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<AddressEntity> {
+  async findOne(@Param('id') id: string): Promise<ReturnAddressDTO> {
     return await this.addressService.findOne(+id);
   }
 

@@ -13,11 +13,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { UserId } from 'src/decorators/userId.decorator';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { Roles } from 'src/decorators/role.decorator';
-import { Role } from 'src/enums/role.enum';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { UserId } from '../decorators/userId.decorator';
+import { RolesGuard } from '../guards/roles.guard';
+import { Roles } from '../decorators/role.decorator';
+import { Role } from '../enums/role.enum';
+import { AuthGuard } from '../guards/auth.guard';
+import { ReturnUserDTO } from './dto/return-user.dto';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('user')
@@ -32,7 +33,7 @@ export class UserController {
 
   @Roles(Role.Admin)
   @Get()
-  async findAll(): Promise<UserEntity[]> {
+  async findAll(): Promise<ReturnUserDTO[]> {
     return await this.userService.findAll();
   }
 
@@ -44,7 +45,7 @@ export class UserController {
 
   @Roles(Role.Admin)
   @Get(':id')
-  async findOne(@Param('id') id: number) {
+  async findOne(@Param('id') id: number): Promise<ReturnUserDTO> {
     return this.userService.findOne(+id);
   }
 

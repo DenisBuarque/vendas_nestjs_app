@@ -9,6 +9,7 @@ import { UserEntity } from './entities/user.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { ReturnUserDTO } from './dto/return-user.dto';
 
 @Injectable()
 export class UserService {
@@ -30,18 +31,18 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<UserEntity[]> {
-    return this.userRepository.find();
+  async findAll(): Promise<ReturnUserDTO[]> {
+    return (await this.userRepository.find()).map((user) => new ReturnUserDTO(user));
   }
 
-  async findOne(id: number): Promise<UserEntity> {
+  async findOne(id: number): Promise<ReturnUserDTO> {
     const user = await this.userRepository.findOne({
       where: { id },
     });
 
     if (!user) throw new NotFoundException('User not found!');
 
-    return user;
+    return new ReturnUserDTO(user);
   }
 
   async update(id: number, data: UpdateUserDto): Promise<UpdateResult> {
