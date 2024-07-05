@@ -1,4 +1,4 @@
-import { ReturnStateDTO } from "src/state/dto/return-state.dto";
+import { ReturnStateDTO } from "../../state/dto/return-state.dto";
 import { CityEntity } from "../entities/city.entity";
 
 export class ReturnCityDTO {

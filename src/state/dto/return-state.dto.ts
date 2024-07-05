@@ -1,6 +1,5 @@
-import { ReturnCityDTO } from "src/city/dto/return-city.dto";
 import { StateEntity } from "../entities/state.entity";
-import { CityEntity } from "src/city/entities/city.entity";
+import { CityEntity } from "../../city/entities/city.entity";
 
 export class ReturnStateDTO {
     id: number;
