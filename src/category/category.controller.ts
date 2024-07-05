@@ -17,6 +17,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/enums/role.enum';
 import { CategoryEntity } from './entities/category.entity';
+import { ReturnCategoryDTO } from './dto/return-category.dto';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('category')
@@ -35,13 +36,13 @@ export class CategoryController {
 
   @Roles(Role.Admin)
   @Get()
-  async findAll(): Promise<CategoryEntity[]> {
+  async findAll(): Promise<ReturnCategoryDTO[]> {
     return await this.categoryService.findAll();
   }
 
   @Roles(Role.Admin)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<ReturnCategoryDTO> {
     return await this.categoryService.findOne(+id);
   }
 

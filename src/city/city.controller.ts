@@ -1,23 +1,18 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
-  Delete,
 } from '@nestjs/common';
 import { CityService } from './city.service';
-import { CreateCityDto } from './dto/create-city.dto';
-import { UpdateCityDto } from './dto/update-city.dto';
 import { CityEntity } from './entities/city.entity';
+import { ReturnCityDTO } from './dto/return-city.dto';
 
 @Controller('city')
 export class CityController {
   constructor(private readonly cityService: CityService) {}
 
   @Get()
-  async findAll(): Promise<CityEntity[]> {
+  async findAll(): Promise<ReturnCityDTO[]> {
     return await this.cityService.findAll();
   }
 

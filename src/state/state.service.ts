@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StateEntity } from './entities/state.entity';
 import { Repository } from 'typeorm';
+import { ReturnStateDTO } from './dto/return-state.dto';
 
 @Injectable()
 export class StateService {
@@ -10,7 +11,7 @@ export class StateService {
     private stateRepository: Repository<StateEntity>,
   ) {}
 
-  async findAll(): Promise<StateEntity[]> {
+  async findAll(): Promise<ReturnStateDTO[]> {
     return await this.stateRepository.find();
   }
 

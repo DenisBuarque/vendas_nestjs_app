@@ -8,6 +8,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from './entities/category.entity';
 import { DeleteResult, Repository } from 'typeorm';
+import { ReturnCategoryDTO } from './dto/return-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -24,17 +25,17 @@ export class CategoryService {
     }
   }
 
-  async findAll(): Promise<CategoryEntity[]> {
-    return await this.categoryRepository.find();
+  async findAll(): Promise<ReturnCategoryDTO[]> {
+    return (await this.categoryRepository.find()).map((category) => new ReturnCategoryDTO(category));
   }
 
-  async findOne(id: number): Promise<CategoryEntity> {
-    const user = await this.categoryRepository.findOne({ where: { id } });
-    if (!user) throw new NotFoundException('Category not found!');
-    return user;
+  async findOne(id: number): Promise<ReturnCategoryDTO> {
+    const category = await this.categoryRepository.findOne({ where: { id } });
+    if (!category) throw new NotFoundException('Category not found!');
+    return new ReturnCategoryDTO(category);
   }
 
-  async update(id: number, data: UpdateCategoryDto): Promise<CategoryEntity> {
+  async update(id: number, data: UpdateCategoryDto): Promise<ReturnCategoryDTO> {
     await this.findOne(id);
     try {
       data.updatedAt = new Date();
