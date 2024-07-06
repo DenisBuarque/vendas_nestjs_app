@@ -6,8 +6,9 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { BadRequestException } from '@nestjs/common';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { ReturnCategoryDTO } from './dto/return-category.dto';
 
-const listCategories = [
+const listCategories: ReturnCategoryDTO[] = [
   { id: 1, name: 'Informática' },
   { id: 2, name: 'Móveis' },
   { id: 3, name: 'Livros' },
@@ -48,28 +49,38 @@ describe('CategoryService', () => {
     expect(repository).toBeDefined();
   });
 
-  describe('create', () => {
-    it('Test: function create success', async () => {
-      const data: CreateCategoryDto = {
-        name: 'Informática',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+  describe('findAll', () => {
+    it('should retunr all caterios', async () => {
+      const result = await service.findAll();
+      expect(result).toEqual(listCategories);
+      expect(repository.find).toHaveBeenCalledTimes(1);
+    });
 
+    it('should return error findAll', async () => {
+      jest.spyOn(repository, 'find').mockRejectedValueOnce(() => {
+        throw new Error('Can not list categories');
+      });
+      await expect(repository.find).rejects.toThrow('Can not list categories');
+    });
+  });
+
+  describe('create', () => {
+    it('should return add new category', async () => {
+      const data: ReturnCategoryDTO = {
+        id: 1,
+        name: 'Informática',
+      };
       const result = await service.create(data);
       expect(result).toEqual(listCategories[0]);
       expect(repository.save).toHaveBeenCalledTimes(1);
     });
 
-    it('Test: Error BadRequestException create category', async () => {
-      const data: CreateCategoryDto = {
+    it('should return error add new category', async () => {
+      const data: ReturnCategoryDTO = {
+        id: 1,
         name: undefined,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
-
       jest.spyOn(repository, 'save').mockRejectedValueOnce(new Error());
-
       try {
         await service.create(data);
       } catch (error) {
@@ -78,49 +89,28 @@ describe('CategoryService', () => {
     });
   });
 
-  describe('findAll', () => {
-    it('Test: function findAll success', async () => {
-      const result = await service.findAll();
-      expect(result).toEqual(listCategories);
-      expect(repository.find).toHaveBeenCalledTimes(1);
-    });
-
-    it('Test: function findAll error', async () => {
-      // Espionando o método findOne e mockando sua implementação para lançar um erro
-      jest.spyOn(repository, 'find').mockRejectedValueOnce(() => {
-        throw new Error('Can not list categories');
-      });
-      // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(repository.find).rejects.toThrow('Can not list categories');
-    });
-  });
-
   describe('findOne', () => {
-    it('Test: function findOne success', async () => {
+    it('should return show category', async () => {
       const result = await service.findOne(1);
       expect(result).toEqual(listCategories[0]);
-      //Obriga a função findOne se executada pelomentos uma vez.
       expect(repository.findOne).toHaveBeenCalledTimes(1);
     });
 
-    it('Test: function findOne error', async () => {
-      // Espionando o método findOne e mockando sua implementação para lançar um erro
+    it('should return error show category', async () => {
       jest.spyOn(repository, 'findOne').mockRejectedValueOnce(() => {
-        throw new Error('Category not found');
+        throw new Error('Error category not found');
       });
-      // Testando se a chamada de findOne com um ID inválido lança o erro esperado
       await expect(service.findOne(undefined)).rejects.toThrow(
-        'Category not found',
+        'Error category not found',
       );
     });
   });
 
   describe('update', () => {
-    it('Test: function update success', async () => {
-      const data: UpdateCategoryDto = {
+    it('should return update category', async () => {
+      const data: ReturnCategoryDTO = {
+        id: 1,
         name: 'Movie',
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       const result = await service.update(1, data);
@@ -128,11 +118,10 @@ describe('CategoryService', () => {
       expect(repository.update).toHaveBeenCalledTimes(1);
     });
 
-    it('Test: Error BadRequestException create category', async () => {
-      const data: UpdateCategoryDto = {
+    it('should return error update category', async () => {
+      const data: ReturnCategoryDTO = {
+        id: 1,
         name: undefined,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       jest.spyOn(repository, 'save').mockRejectedValueOnce(new Error());
@@ -146,20 +135,23 @@ describe('CategoryService', () => {
   });
 
   describe('delete', () => {
-    it('Test: function delete success', async () => {
+    it('should return delete category', async () => {
       const result = await service.remove(1);
       expect(result).toEqual(CategoryEntity);
     });
 
-    it('Test: function delete error', async () => {
-      // Espionando o método findOne e mockando sua implementação para lançar um erro
+    it('should return error delete category', async () => {
       jest.spyOn(repository, 'delete').mockRejectedValueOnce(() => {
-        throw new Error('Can not delete category');
+        throw new Error('Error delete category');
       });
-      // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(repository.delete(undefined)).rejects.toThrow(
-        'Can not delete category',
-      );
+
+      try {
+        await expect(repository.delete(undefined)).rejects.toThrow(
+          'Error delete category',
+        );
+      } catch (error) {
+        expect(error).toBeInstanceOf(BadRequestException);
+      }
     });
   });
 });
