@@ -6,13 +6,13 @@ import {
   Patch,
   Param,
   Delete,
-  BadRequestException,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
 import { DeleteResult } from 'typeorm';
+import { ReturnProductDTO } from './dto/Return-product.dto';
 
 @Controller('product')
 export class ProductController {
@@ -24,7 +24,7 @@ export class ProductController {
   }
 
   @Get()
-  findAll(): Promise<ProductEntity[]> {
+  findAll(): Promise<ReturnProductDTO[]> {
     return this.productService.findAll();
   }
 
@@ -34,7 +34,7 @@ export class ProductController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ProductEntity> {
+  findOne(@Param('id') id: string): Promise<ReturnProductDTO> {
     return this.productService.findOne(+id);
   }
 
@@ -42,7 +42,7 @@ export class ProductController {
   update(
     @Param('id') id: string,
     @Body() data: UpdateProductDto,
-  ): Promise<ProductEntity> {
+  ): Promise<ReturnProductDTO> {
     return this.productService.update(+id, data);
   }
 

@@ -14,6 +14,7 @@ import { ProductEntity } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, In, Repository } from 'typeorm';
 import { CategoryService } from '../category/category.service';
+import { ReturnProductDTO } from './dto/Return-product.dto';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Injectable()
@@ -34,11 +35,17 @@ export class ProductService {
   }
 
   @Roles(Role.Admin)
-  async findAll(): Promise<ProductEntity[]> {
-    return await this.productRepository.find({
-      order: { id: 'DESC' },
-      relations: { category: true },
-    });
+  async findAll(): Promise<ReturnProductDTO[]> {
+    return (
+      await this.productRepository.find({
+        order: { id: 'DESC' },
+        relations: { 
+          category: true,
+          cartProducts: true,
+          orderProduct: true,
+         },
+      })
+    ).map((product) => new ReturnProductDTO(product));
   }
 
   @Roles(Role.Admin)
@@ -62,17 +69,17 @@ export class ProductService {
   }
 
   @Roles(Role.Admin)
-  async findOne(id: number): Promise<ProductEntity> {
+  async findOne(id: number): Promise<ReturnProductDTO> {
     const product = await this.productRepository.findOne({
       where: { id },
       relations: { category: true },
     });
     if (!product) throw new NotFoundException('Produto not found!');
-    return product;
+    return new ReturnProductDTO(product);
   }
 
   @Roles(Role.Admin)
-  async update(id: number, data: UpdateProductDto): Promise<ProductEntity> {
+  async update(id: number, data: UpdateProductDto): Promise<ReturnProductDTO> {
     await this.findOne(id);
     try {
       await this.productRepository.update(id, data);

@@ -5,32 +5,47 @@ import { ProductEntity } from './entities/product.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { JwtService } from '@nestjs/jwt';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { CategoryService } from '../category/category.service';
 import { CategoryEntity } from 'src/category/entities/category.entity';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 const listProducts = [
   {
     id: 1,
-    name: 'Produto',
-    price: 10,
-    description: 'Descrição do produto',
-    categoryId: 1,
+    name: 'Produto 1',
+    price: '10.00',
+    description: 'Desfrição do produto',
+    image: 'http://localhost:3000/assets/image.jpg',
+    category: {
+      id: 2,
+      name: 'Eletrodomesticos',
+    },
+    cartProducts: {},
   },
   {
     id: 2,
     name: 'Produto 2',
-    price: 20,
-    description: 'Descrição do produto',
-    categoryId: 2,
+    price: '20.00',
+    description: 'Desfrição do produto',
+    image: 'http://localhost:3000/assets/image.jpg',
+    category: {
+      id: 2,
+      name: 'Eletrodomesticos',
+    },
+    cartProducts: {},
   },
   {
     id: 3,
     name: 'Produto 3',
-    price: 30,
-    description: 'Descrição do produto',
-    categoryId: 3,
+    price: '30.00',
+    description: 'Desfrição do produto',
+    image: 'http://localhost:3000/assets/image.jpg',
+    category: {
+      id: 2,
+      name: 'Eletrodomesticos',
+    },
+    cartProducts: {},
   },
 ];
 
@@ -38,22 +53,16 @@ const listCategory: CategoryEntity[] = [
   {
     id: 1,
     name: 'Informática',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     products: [],
   },
   {
     id: 2,
     name: 'Limpeza',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     products: [],
   },
   {
     id: 3,
     name: 'Auto',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     products: [],
   },
 ];
@@ -104,15 +113,29 @@ describe('ProductService', () => {
     expect(category).toBeDefined();
   });
 
+  describe('findAll', () => {
+    it('should return all products', async () => {
+      const result = await service.findAll();
+      expect(result).toEqual(listProducts);
+      expect(repository.find).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return error list all products', async () => {
+      jest.spyOn(repository, 'find').mockRejectedValueOnce(() => {
+        throw new Error('Error list all products');
+      });
+      await expect(repository.find).rejects.toThrow('Error list all products');
+    });
+  });
+
   describe('create', () => {
-    it('Test: function create success', async () => {
+    it('should add new product with success', async () => {
       const data: CreateProductDto = {
-        name: 'Produto',
+        name: 'Produto 4',
         price: 10,
-        description: 'Descrição do produto',
-        categoryId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        description: 'Desfrição do produto',
+        image: 'http://localhost:3000/assets/image.jpg',
+        categoryId: 2,
       };
 
       const result = await service.create(data);
@@ -120,14 +143,13 @@ describe('ProductService', () => {
       expect(repository.save).toHaveBeenCalledTimes(1);
     });
 
-    it('Test: Error BadRequestException create product', async () => {
+    it('should return error add new product', async () => {
       const data: CreateProductDto = {
         name: undefined,
         price: 10,
-        description: 'Descrição do produto',
-        categoryId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        description: 'Desfrição do produto',
+        image: 'http://localhost:3000/assets/image.jpg',
+        categoryId: 2,
       };
 
       jest.spyOn(repository, 'save').mockRejectedValueOnce(new Error());
@@ -141,14 +163,17 @@ describe('ProductService', () => {
   });
 
   describe('productByCategory', () => {
-    it('Test: function productByCategory success', async () => {
+    it('should return all product by category', async () => {
+
       jest.spyOn(category, 'findOne').mockResolvedValue(listCategory[0]);
+
       const result = await service.productByCategory(listCategory[0].id);
       expect(result).toEqual(listProducts);
       expect(repository.find).toHaveBeenCalledTimes(1);
+
     });
 
-    it('should throw NotFoundException if category not found', async () => {
+    it('should return error NotFoundException if category not found', async () => {
       jest.spyOn(category, 'findOne').mockResolvedValue(undefined);
       await expect(service.productByCategory(1)).rejects.toThrow(
         NotFoundException,
@@ -156,31 +181,14 @@ describe('ProductService', () => {
     });
   });
 
-  describe('findAll', () => {
-    it('Test: function findAll success', async () => {
-      const result = await service.findAll();
-      expect(result).toEqual(listProducts);
-      expect(repository.find).toHaveBeenCalledTimes(1);
-    });
-
-    it('Test: function findAll error', async () => {
-      // Espionando o método findOne e mockando sua implementação para lançar um erro
-      jest.spyOn(repository, 'find').mockRejectedValueOnce(() => {
-        throw new Error('Can not list products');
-      });
-      // Testando se a chamada de findOne com um ID inválido lança o erro esperado
-      await expect(repository.find).rejects.toThrow('Can not list products');
-    });
-  });
-
   describe('findOne', () => {
-    it('Test: function findOne success', async () => {
+    it('should show product data', async () => {
       const result = await service.findOne(1);
       expect(result).toEqual(listProducts[0]);
       expect(repository.findOne).toHaveBeenCalledTimes(1);
     });
 
-    it('Test: function findOne error', async () => {
+    it('should return error when find one product data', async () => {
       jest.spyOn(repository, 'findOne').mockRejectedValueOnce(() => {
         throw new Error('Product not found');
       });
@@ -191,7 +199,7 @@ describe('ProductService', () => {
   });
 
   describe('update', () => {
-    it('Test: function update success', async () => {
+    it('should return update data product', async () => {
       const data: UpdateProductDto = {
         name: 'Produto',
         price: 10,
@@ -206,7 +214,7 @@ describe('ProductService', () => {
       expect(repository.update).toHaveBeenCalledTimes(1);
     });
 
-    it('Test: Error BadRequestException create category', async () => {
+    it('should return error when updating product data', async () => {
       const data: UpdateProductDto = {
         name: undefined,
         price: 10,
@@ -227,12 +235,12 @@ describe('ProductService', () => {
   });
 
   describe('delete', () => {
-    it('Test: function delete success', async () => {
+    it('should delete product data', async () => {
       const result = await service.remove(1);
       expect(result).toEqual(ProductEntity);
     });
 
-    it('Test: function delete error', async () => {
+    it('should return error when delete product data', async () => {
       jest.spyOn(repository, 'delete').mockRejectedValueOnce(() => {
         throw new Error('Can not delete product');
       });
