@@ -72,8 +72,6 @@ export class OrderService {
       }),
     );
 
-    //await this.cartService.clearCart(userId);
-
     return order;
   }
 
