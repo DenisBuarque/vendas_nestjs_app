@@ -5,12 +5,17 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { AxiosError, AxiosResponse } from 'axios';
+import { CityService } from 'src/city/city.service';
 
 @Injectable()
 export class CorreiosService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly cityService: CityService
+  ) {}
+
   async findAddressByCep(cep: string): Promise<AxiosResponse<any>> {
-    return this.httpService.axiosRef
+    const data = await this.httpService.axiosRef
       .get(`https://viacep.com.br/ws/${cep}/json/`)
       .then((result) => {
         if (result.data.erro === 'true') throw new NotFoundException('Cep not found.');
@@ -22,5 +27,10 @@ export class CorreiosService {
           error.message,
         );
       });
+
+      const city = await this.cityService.findCityByName(data.localidade, data.uf);
+      
+      return data;
+
   }
 }

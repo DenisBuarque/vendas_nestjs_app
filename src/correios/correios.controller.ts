@@ -9,5 +9,4 @@ export class CorreiosController {
   async findAddressByCep(@Param('cep') cep: string) {
     return await this.correiosService.findAddressByCep(cep);
   }
-
 }

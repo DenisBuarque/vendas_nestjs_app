@@ -32,4 +32,19 @@ export class CityService {
   async getAllCitiesByState(id: number): Promise<CityEntity[]> {
     return await this.cityRepository.find({ where: { stateId: id } });
   }
+
+  async findCityByName(city: string, uf: string): Promise<CityEntity> {
+    const record = await this.cityRepository.findOne({
+      where: {
+        name: city,
+        state: {
+          sigla: uf,
+        },
+      },
+      relations: { state: true },
+    });
+
+    if (!record) throw new NotFoundException('City not found');
+    return record;
+  }
 }
