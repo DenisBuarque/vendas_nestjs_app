@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { AxiosError, AxiosResponse } from 'axios';
 import { CityService } from 'src/city/city.service';
+import { CityEntity } from 'src/city/entities/city.entity';
 
 @Injectable()
 export class CorreiosService {
@@ -28,8 +29,7 @@ export class CorreiosService {
         );
       });
 
-      const city = await this.cityService.findCityByName(data.localidade, data.uf);
-      
+      //const city: CityEntity | undefined = await this.cityService.findCityByName(data.localidade, data.uf).catch(() => undefined);
       return data;
 
   }
