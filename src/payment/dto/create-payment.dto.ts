@@ -4,7 +4,6 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  isNotEmpty,
 } from 'class-validator';
 import { Entity } from 'typeorm';
 
