@@ -15,7 +15,6 @@ export class ReturnOrderDTO {
     address?: ReturnAddressDTO
     payment?: ReturnPaymentDTO
     orderProduct?: ReturnOrderProducts[];
-    amountProducts?: number
 
     constructor(order: OrderEntity){
         this.id = order.id;
