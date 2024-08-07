@@ -1,10 +1,10 @@
 export class CreateUserDto {
-    name: string;
-    email: string;
-    phone: string;
-    cpf: string;
+    readonly name: string;
+    readonly email: string;
+    readonly phone: string;
+    readonly cpf: string;
     password: string;
     role?: string;
-    createdAt?: Date;
+    readonly createdAt?: Date;
     updatedAt?: Date;
 }

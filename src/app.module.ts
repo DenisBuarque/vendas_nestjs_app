@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './user/user.module';
+import { StateModule } from './state/state.module';
 
 @Module({
   imports: [
@@ -21,10 +22,10 @@ import { UserModule } from './user/user.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       migrations: [__dirname + '/migration/{.ts,*.js}'],
       migrationsRun: true,
-      //entities:[UserEntity, AddressEntity, StateEntity, CityEntity],
       //synchronize: true,
     }),
     UserModule,
+    StateModule,
   ],
   controllers: [AppController],
   providers: [
