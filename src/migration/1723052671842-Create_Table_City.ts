@@ -18,7 +18,7 @@ export class CreateTableCity1723052671842 implements MigrationInterface {
                     length: '100',
                 },
                 {
-                    name: 'state_id',
+                    name: 'stateId',
                     type: 'integer',
                 },
                 {
@@ -37,7 +37,7 @@ export class CreateTableCity1723052671842 implements MigrationInterface {
 
         // Criação da chave estrangeira para `state_id`
         await queryRunner.createForeignKey('cities', new TableForeignKey({
-            columnNames: ['state_id'],
+            columnNames: ['stateId'],
             referencedColumnNames: ['id'],
             referencedTableName: 'states', // Nome da tabela referenciada
             onDelete: 'CASCADE', // Ação quando o estado é deletado
@@ -48,7 +48,7 @@ export class CreateTableCity1723052671842 implements MigrationInterface {
 
         // Remover a chave estrangeira
         const table = await queryRunner.getTable('cities');
-        const foreignKey = table.foreignKeys.find(fk => fk.columnNames.indexOf('state_id') !== -1);
+        const foreignKey = table.foreignKeys.find(fk => fk.columnNames.indexOf('stateId') !== -1);
         await queryRunner.dropForeignKey('cities', foreignKey);
 
         // Remover a tabela `city`

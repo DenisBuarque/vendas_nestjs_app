@@ -31,6 +31,7 @@ export class AddressEntity {
     @UpdateDateColumn({ type: Date, name: 'updated_at' })
     updatedAt: Date;
 
+    //relations
     @ManyToOne(() => CityEntity, (city) => city.adresses)
     city: CityEntity
 

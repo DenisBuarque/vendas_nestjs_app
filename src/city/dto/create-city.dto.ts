@@ -1,6 +1,6 @@
 export class CreateCityDto {
     name: string;
-    state_id: number;
+    stateId: number;
     createdAt: Date;
     updatedAt: Date;
 }

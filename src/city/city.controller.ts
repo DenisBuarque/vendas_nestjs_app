@@ -1,7 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { CityService } from './city.service';
-import { CreateCityDto } from './dto/create-city.dto';
-import { UpdateCityDto } from './dto/update-city.dto';
 import { CityEntity } from './entities/city.entity';
 
 @Controller('city')
@@ -14,7 +12,12 @@ export class CityController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<CityEntity> {
+  async findOne(@Param('id') id: number): Promise<CityEntity> {
     return await this.cityService.findOne(+id);
+  }
+
+  @Get('/state/:id')
+  async getAllCitiesByState(@Param('id') id: number): Promise<CityEntity[]> {
+    return await this.cityService.getAllCitiesByState(+id);
   }
 }

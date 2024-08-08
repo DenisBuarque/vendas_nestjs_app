@@ -16,10 +16,12 @@ export class CityService {
   }
 
   async findOne(id: number): Promise<CityEntity> {
-    
     const city = await this.cityRepository.findOne({ where: { id }}); 
-    
     return city;
   }
 
+  async getAllCitiesByState (id: number): Promise<CityEntity[]> {
+    const cities = await this.cityRepository.find({ where: { stateId: id }});
+    return cities;
+  }
 }

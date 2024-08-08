@@ -18,6 +18,7 @@ export class StateEntity {
     @UpdateDateColumn({ type: Date, name: 'updatedAt' })
     updatedAt: Date;
 
-    @OneToMany(() => CityEntity, (city) => city.state)
-    city_id: CityEntity[]
+    // Relation
+    @OneToMany(() => CityEntity, (city) => city.stateId)
+    cities: CityEntity[]
 }
