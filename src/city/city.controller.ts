@@ -13,7 +13,7 @@ export class CityController {
 
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<CityEntity> {
-    return await this.cityService.findOne(+id);
+    return await this.cityService.findOne(id);
   }
 
   @Get('/state/:id')
