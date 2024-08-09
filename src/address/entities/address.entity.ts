@@ -25,7 +25,7 @@ export class AddressEntity {
     @Column({ type: 'integer', name: 'cityId', nullable: false })
     cityId: number;
 
-    @Column({ type: 'integer', name: 'userId', nullable: false  })
+    @Column({ type: 'integer', name: 'userId', nullable: false })
     userId: number;
 
     @CreateDateColumn({ type: Date, name: 'created_at'})

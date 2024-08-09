@@ -1,22 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { AddressService } from './address.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { AddressEntity } from './entities/address.entity';
+import { ReturnAddressDto } from './dto/return-address.dto';
 
 @Controller('address')
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}
 
   @Post('/user/:userId')
-  async create(@Param('userId') userId: number, @Body() data: CreateAddressDto) {
-    console.log(userId);
+  async create(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Body() data: CreateAddressDto,
+  ) {
     return await this.addressService.create(data, userId);
   }
 
   @Get()
-  async findAll(): Promise<AddressEntity[]> {
-    return await this.addressService.findAll();
+  async findAll(): Promise<ReturnAddressDto[]> {
+    return (await this.addressService.findAll()).map(
+      (addressEntity) => new ReturnAddressDto(addressEntity),
+    );
   }
 
   @Get(':id')

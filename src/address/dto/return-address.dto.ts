@@ -9,8 +9,6 @@ export class ReturnAddressDto {
     district: string;
     cityId: number;
     userId: number;
-    createdAt: Date;
-    updatedAt: Date;
 
     constructor(addressEntity: AddressEntity) {
         this.id = addressEntity.id;
@@ -19,5 +17,7 @@ export class ReturnAddressDto {
         this.house_number = addressEntity.house_number;
         this.complement = addressEntity.complement;
         this.district = addressEntity.district;
+        this.cityId = addressEntity.cityId;
+        this.userId = addressEntity.userId;
     }
 }

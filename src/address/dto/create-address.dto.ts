@@ -1,4 +1,5 @@
-import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from "class-validator";
+import { Type } from "class-transformer";
+import { IsDate, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, MaxLength } from "class-validator";
 
 export class CreateAddressDto {
 
@@ -30,7 +31,6 @@ export class CreateAddressDto {
     @IsNotEmpty()
     readonly cityId: number;
 
-    @IsNumber()
     readonly userId: number;
 
     @IsDate()
