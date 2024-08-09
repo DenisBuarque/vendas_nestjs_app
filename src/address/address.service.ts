@@ -33,7 +33,11 @@ export class AddressService {
   async findOne(id: number): Promise<AddressEntity> {
     const address = await this.addressRepository.findOne({
       where: { id },
-      relations: { city: true },
+      relations: {
+        city: {
+          state: true,
+        },
+      },
     });
     if (!address) throw new NotFoundException(`Address ${id} not found.`);
     return address;

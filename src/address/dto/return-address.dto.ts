@@ -1,3 +1,4 @@
+import { ReturnCityDto } from "src/city/dto/return-city.dto";
 import { AddressEntity } from "../entities/address.entity";
 
 export class ReturnAddressDto {
@@ -7,8 +8,7 @@ export class ReturnAddressDto {
     house_number: number;
     complement: string;
     district: string;
-    //cityId: CityEntity;
-    //userId: number;
+    city: ReturnCityDto;
 
     constructor(addressEntity: AddressEntity) {
         this.id = addressEntity.id;
@@ -17,7 +17,6 @@ export class ReturnAddressDto {
         this.house_number = addressEntity.house_number;
         this.complement = addressEntity.complement;
         this.district = addressEntity.district;
-        //this.cityId = addressEntity.cityId;
-        //this.userId = addressEntity.userId;
+        this.city = addressEntity.city ? new ReturnCityDto(addressEntity.city) : undefined;
     }
 }
