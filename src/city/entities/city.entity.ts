@@ -24,7 +24,7 @@ export class CityEntity {
     @JoinColumn()
     state: StateEntity
 
-    @OneToMany(() => AddressEntity, (address) => address.city_id)
+    @OneToMany(() => AddressEntity, (address) => address.cityId)
     adresses: AddressEntity[]
 
 }

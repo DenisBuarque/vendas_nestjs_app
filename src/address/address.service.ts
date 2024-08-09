@@ -7,18 +7,18 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class AddressService {
-
   constructor(
     @InjectRepository(AddressEntity)
     private readonly addressRepository: Repository<AddressEntity>,
-  ){}
-  
-  create(createAddressDto: CreateAddressDto) {
-    return 'This action adds a new address';
+  ) {}
+
+  async create(data: CreateAddressDto, userId: number): Promise<AddressEntity> {
+    return await this.addressRepository.save({ ...data, userId });
   }
 
-  findAll() {
-    return `This action returns all address`;
+  async findAll(): Promise<AddressEntity[]> {
+    const adresses = await this.addressRepository.find();
+    return adresses;
   }
 
   findOne(id: number) {

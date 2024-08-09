@@ -1,10 +1,43 @@
+import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from "class-validator";
+
 export class CreateAddressDto {
-    zip_code: string;
-    address: string;
-    house_number: number;
-    complement: string;
-    city_id: number;
-    user_id: number;
-    createdAt: Date;
-    updatedAt: Date;
+
+    @IsString()
+    @IsNotEmpty()
+    readonly zip_code: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(255)
+    readonly address: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(5)
+    readonly house_number: number;
+
+    @IsString()
+    @MaxLength(255)
+    @IsOptional()
+    readonly complement?: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @MaxLength(50)
+    readonly district: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    readonly cityId: number;
+
+    @IsNumber()
+    readonly userId: number;
+
+    @IsDate()
+    @IsOptional()
+    readonly createdAt?: Date;
+
+    @IsDate()
+    @IsOptional()
+    updatedAt?: Date;
 }

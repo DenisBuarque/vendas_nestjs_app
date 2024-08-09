@@ -4,7 +4,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Up
 
 @Entity({ name: 'adresses'})
 export class AddressEntity {
-    @PrimaryGeneratedColumn('increment', {name: 'id', unsigned: true })
+    @PrimaryGeneratedColumn('increment', {type: 'integer', name: 'id' })
     id: number;
 
     @Column({ type: 'varchar', name: 'zip_code', nullable: false, length: 9 })
@@ -19,11 +19,14 @@ export class AddressEntity {
     @Column({ type: 'varchar', name: 'complement', length: 255 })
     complement: string;
 
-    @Column({ type: 'integer', name: 'city_id', nullable: false })
-    city_id: number;
+    @Column({ type: 'varchar', name: 'district', length: 50 })
+    district: string;
 
-    @Column({ type: 'integer', name: 'user_id', nullable: false  })
-    user_id: number;
+    @Column({ type: 'integer', name: 'cityId', nullable: false })
+    cityId: number;
+
+    @Column({ type: 'integer', name: 'userId', nullable: false  })
+    userId: number;
 
     @CreateDateColumn({ type: Date, name: 'created_at'})
     createdAt: Date;

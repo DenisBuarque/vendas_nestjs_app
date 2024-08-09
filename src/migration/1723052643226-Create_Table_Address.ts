@@ -29,16 +29,21 @@ export class CreateTableAddress1723052643226 implements MigrationInterface {
             isNullable: true, // Complemento pode ser opcional
           },
           {
+            name: 'district',
+            type: 'varchar',
+            length: '50',
+          },
+          {
             name: 'house_number',
             type: 'varchar',
             length: '5',
           },
           {
-            name: 'city_id',
+            name: 'citId',
             type: 'integer',
           },
           {
-            name: 'user_id',
+            name: 'userId',
             type: 'integer',
           },
           {
