@@ -1,6 +1,6 @@
 import { CityEntity } from "src/city/entities/city.entity";
 import { UserEntity } from "src/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'adresses'})
 export class AddressEntity {
@@ -38,6 +38,6 @@ export class AddressEntity {
     @ManyToOne(() => CityEntity, (city) => city.adresses)
     city: CityEntity
 
-    @ManyToOne(() => UserEntity, (user) => user.address)
+    @ManyToOne(() => UserEntity, (user) => user.adresses)
     user: UserEntity
 }

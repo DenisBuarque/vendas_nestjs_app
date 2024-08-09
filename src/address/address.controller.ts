@@ -34,8 +34,8 @@ export class AddressController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.addressService.findOne(+id);
+  async findOne(@Param('id') id: number): Promise<AddressEntity> {
+    return await this.addressService.findOne(id);
   }
 
   @Patch(':id')

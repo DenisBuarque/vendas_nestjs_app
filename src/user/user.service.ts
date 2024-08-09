@@ -29,7 +29,9 @@ export class UserService {
   async findOne(id: number): Promise<UserEntity> {
     const user = await this.userRetository.findOne({
       where: { id },
+      relations: { adresses: true },
     });
+    
     if (!user) throw new NotFoundException(`User ${id} not found.`);
 
     return user;

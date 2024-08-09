@@ -19,6 +19,6 @@ export class StateEntity {
     updatedAt: Date;
 
     // Relation
-    @OneToMany(() => CityEntity, (city) => city.stateId)
+    @OneToMany(() => CityEntity, (city) => city.state)
     cities: CityEntity[]
 }

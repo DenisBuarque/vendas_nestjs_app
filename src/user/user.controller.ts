@@ -31,8 +31,8 @@ export class UserController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<UserEntity> {
-    return await this.userService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<ReturnUserDto> {
+    return new ReturnUserDto(await this.userService.findOne(id));
   }
 
   @Patch(':id')
