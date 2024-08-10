@@ -43,6 +43,12 @@ export class UserService {
     return user;
   }
 
+  async getUserByEmail(email: string): Promise<UserEntity> {
+    const user = await this.userRetository.findOne({ where: { email }});
+    if(!user) throw new NotFoundException(`E-mail ${email} not found.`);
+    return user;
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
