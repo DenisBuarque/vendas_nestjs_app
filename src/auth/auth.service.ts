@@ -1,14 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import * as bcrypt from 'bcrypt';
-import { UserEntity } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
+import { ReturnSingInDto } from './dto/return-singin.dto';
+import { ReturnUserDto } from 'src/user/dto/return-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
-  async login(data: CreateAuthDto): Promise<UserEntity> {
+  async signIn(data: CreateAuthDto): Promise<ReturnSingInDto> {
     const user = await this.userService
       .getUserByEmail(data.email)
       .catch(() => undefined);
@@ -18,6 +23,16 @@ export class AuthService {
     if (!isMatch)
       throw new NotFoundException('Sorry, your password is invalid.');
 
-    return user;
+    const payload = {
+      sub: user.id,
+      username: user.name,
+      useremail: user.email,
+      userrole: user.role,
+    };
+
+    return {
+      user: new ReturnUserDto(user),
+      token: await this.jwtService.signAsync(payload),
+    };
   }
 }
