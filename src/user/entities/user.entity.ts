@@ -1,4 +1,5 @@
 import { AddressEntity } from "src/address/entities/address.entity";
+import { Role } from "src/enums/role.enum";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: 'users'})
@@ -21,8 +22,8 @@ export class UserEntity {
     @Column({ type: 'varchar', name: 'password', nullable: false, length: 255 })
     password: string;
     
-    @Column({ type: 'varchar', name: 'role' })
-    role?: string;
+    @Column({ type: 'varchar', name: 'roles' })
+    roles?: Role[];
     
     @CreateDateColumn({ type: Date, name: 'created_at' })
     createdAt?: Date;
