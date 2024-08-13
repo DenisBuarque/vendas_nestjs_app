@@ -18,6 +18,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { UserId } from 'src/decorators/user-id.decorator';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('address')
@@ -25,9 +26,9 @@ export class AddressController {
   constructor(private readonly addressService: AddressService) {}
 
   @Roles(Role.User)
-  @Post('/user/:userId')
+  @Post('/user')
   async create(
-    @Param('userId', ParseIntPipe) userId: number,
+    @UserId() userId: number,
     @Body() data: CreateAddressDto,
   ) {
     return await this.addressService.create(data, userId);
