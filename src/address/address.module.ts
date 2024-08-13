@@ -5,18 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AddressEntity } from './entities/address.entity';
 import { UserModule } from 'src/user/user.module';
 import { CityModule } from 'src/city/city.module';
-import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from 'src/guards/roles.guard';
+import { AuthModule } from 'src/auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AddressEntity]), UserModule, CityModule],
+  imports: [TypeOrmModule.forFeature([AddressEntity]), UserModule, CityModule, AuthModule, JwtModule],
   controllers: [AddressController],
-  providers: [
-    AddressService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  providers: [AddressService],
 })
 export class AddressModule {}

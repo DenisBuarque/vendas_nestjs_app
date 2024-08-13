@@ -35,7 +35,7 @@ export class CreateTableUser1723037277677 implements MigrationInterface {
                     isUnique: true,
                 },
                 {
-                    name: 'roles',
+                    name: 'role',
                     type: 'varchar',
                     length: '50',
                 },

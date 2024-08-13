@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import * as bcrypt from 'bcrypt';
 import { UserService } from 'src/user/user.service';
 import { ReturnSingInDto } from './dto/return-singin.dto';
-import { ReturnUserDto } from 'src/user/dto/return-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { UserEntity } from 'src/user/entities/user.entity';
+import { ReturnUserDto } from 'src/user/dto/return-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -13,26 +14,44 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  async createToken(user: UserEntity) {
+
+    return this.jwtService.signAsync(
+      {
+        sub: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      {
+        issuer: 'login',
+        audience: 'users',
+        secret: process.env.JWT_SECRET,
+      },
+    );
+  }
+
+  verifyToken(token: string) {
+    try {
+      const data = this.jwtService.verify(token, {
+        issuer: 'login',
+        audience: 'users',
+      });
+      return data;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
+  }
+
   async signIn(data: CreateAuthDto): Promise<ReturnSingInDto> {
-    const user = await this.userService
-      .getUserByEmail(data.email)
-      .catch(() => undefined);
-    if (!user) throw new NotFoundException('Sorry, your e-mail is invalid.');
+    const user = await this.userService.getUserByEmail(data.email);
+    if (!user) throw new UnauthorizedException('Sorry, your e-mail is invalid.');
 
     const isMatch = await bcrypt.compare(data.password, user.password);
-    if (!isMatch)
-      throw new NotFoundException('Sorry, your password is invalid.');
+    if (!isMatch) throw new UnauthorizedException('Sorry, your password is invalid.');
 
-    const payload = {
-      sub: user.id,
-      name: user.name,
-      email: user.email,
-      roles: user.roles,
-    };
+    const token = await this.createToken(user);
 
-    return {
-      user: new ReturnUserDto(user),
-      token: await this.jwtService.signAsync(payload),
-    };
+    return { user, token };
   }
 }

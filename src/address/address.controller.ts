@@ -17,14 +17,15 @@ import { ReturnAddressDto } from './dto/return-address.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { AuthGuard } from 'src/guards/auth.guard';
 
-@UseGuards(RolesGuard)
+@UseGuards(AuthGuard, RolesGuard)
 @Controller('address')
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}
 
-  @Post('/user/:userId')
   @Roles(Role.User)
+  @Post('/user/:userId')
   async create(
     @Param('userId', ParseIntPipe) userId: number,
     @Body() data: CreateAddressDto,
@@ -32,6 +33,7 @@ export class AddressController {
     return await this.addressService.create(data, userId);
   }
 
+  @Roles(Role.User)
   @Get()
   async findAll(): Promise<ReturnAddressDto[]> {
     return (await this.addressService.findAll()).map(
@@ -39,16 +41,19 @@ export class AddressController {
     );
   }
 
+  @Roles(Role.User)
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<AddressEntity> {
     return await this.addressService.findOne(id);
   }
 
+  @Roles(Role.User)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto) {
     return this.addressService.update(+id, updateAddressDto);
   }
 
+  @Roles(Role.User)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.addressService.remove(+id);
