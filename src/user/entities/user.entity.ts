@@ -1,5 +1,5 @@
-import { AddressEntity } from 'src/address/entities/address.entity';
-import { Role } from 'src/enums/role.enum';
+import { AddressEntity } from '../../address/entities/address.entity';
+import { Role } from '../../enums/role.enum';
 import {
   Column,
   CreateDateColumn,
