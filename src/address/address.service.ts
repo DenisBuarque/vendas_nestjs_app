@@ -25,8 +25,8 @@ export class AddressService {
     return await this.addressRepository.save({ ...data, userId });
   }
 
-  async findAll(): Promise<AddressEntity[]> {
-    const adresses = await this.addressRepository.find();
+  async findAll(id: number): Promise<AddressEntity[]> {
+    const adresses = await this.addressRepository.find({ where: { userId: id }});
     return adresses;
   }
 

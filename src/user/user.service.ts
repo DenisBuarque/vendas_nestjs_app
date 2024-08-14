@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
@@ -14,6 +14,10 @@ export class UserService {
   ) {}
 
   async create(data: CreateUserDto): Promise<UserEntity> {
+
+    const email = this.getUserByEmail(data.email);
+    if(email) throw new ForbiddenException("E-mail registered in sistem.");
+
     const salt = 10;
     const hash = await bcrypt.hash(data.password, salt);
 

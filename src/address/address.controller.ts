@@ -36,8 +36,8 @@ export class AddressController {
 
   @Roles(Role.User)
   @Get()
-  async findAll(): Promise<ReturnAddressDto[]> {
-    return (await this.addressService.findAll()).map(
+  async findAll(@UserId() id: number): Promise<ReturnAddressDto[]> {
+    return (await this.addressService.findAll(id)).map(
       (addressEntity) => new ReturnAddressDto(addressEntity),
     );
   }
