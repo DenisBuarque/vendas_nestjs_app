@@ -26,7 +26,13 @@ export class AddressService {
   }
 
   async findAll(id: number): Promise<AddressEntity[]> {
-    const adresses = await this.addressRepository.find({ where: { userId: id }});
+    const adresses = await this.addressRepository.find({
+      where: { userId: id },
+    });
+    if (!adresses)
+      throw new NotFoundException(
+        'No address added in the system, please add an address.',
+      );
     return adresses;
   }
 
