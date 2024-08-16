@@ -23,7 +23,7 @@ export class CreateProductDto {
     readonly image?: string;
 
     @IsNumber()
-    categoryId: number;
+    categoryId?: number;
 
     @IsDate()
     @IsOptional()

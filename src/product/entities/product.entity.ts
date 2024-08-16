@@ -1,6 +1,7 @@
 import { CategoryEntity } from "src/category/entities/category.entity";
-import { Column, CreateDateColumn, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
+@Entity({ name: 'products'})
 export class ProductEntity {
     @PrimaryGeneratedColumn('increment',{type: 'integer', name: 'id' })
     id: number;
@@ -15,7 +16,7 @@ export class ProductEntity {
     price: number;
 
     @Column({ type: 'integer', name: 'categoryId' })
-    categoryId: number;
+    categoryId?: number;
 
     @CreateDateColumn({ type: Date, name: 'createdAt' })
     createdAt: Date;

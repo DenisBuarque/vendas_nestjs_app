@@ -3,7 +3,7 @@ import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Up
 
 @Entity({ name: 'categories'})
 export class CategoryEntity {
-    @PrimaryGeneratedColumn('increment',{type: 'integer', name: 'id' })
+    @PrimaryGeneratedColumn('increment', {type: 'integer', name: 'id' })
     id: string;
 
     @Column({ type: 'varchar', name: 'name', nullable: false, unique: true, length: 50 })
