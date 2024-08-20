@@ -1,26 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CategoryEntity } from './entities/category.entity';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { ReturnCategoryDto } from './dto/return-category.dto';
 
 @Injectable()
 export class CategoryService {
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  constructor(
+    @InjectRepository(CategoryEntity)
+    private readonly categoryRepository: Repository<CategoryEntity>,
+  ) {}
+
+  async create(data: CreateCategoryDto): Promise<CreateCategoryDto> {
+    const category = await this.categoryRepository.findOne({
+      where: { name: data.name },
+    });
+    if (category)
+      throw new BadRequestException('Category exist, add new category.');
+    return this.categoryRepository.save(data);
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAll(): Promise<ReturnCategoryDto[]> {
+    const categories = await this.categoryRepository.find();
+    if (!categories)
+      throw new NotFoundException('List category this empty, add a category.');
+    return categories;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: number): Promise<CategoryEntity> {
+    const category = await this.categoryRepository.findOne({ where: { id } });
+    if (!category) throw new NotFoundException('Category not found.');
+    return category;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, data: UpdateCategoryDto): Promise<UpdateResult> {
+    await this.findOne(id);
+    data.updatedAt = new Date();
+    return await this.categoryRepository.update(id, data);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number): Promise<DeleteResult> {
+    await this.findOne(id);
+    return await this.categoryRepository.delete(id);
   }
 }
