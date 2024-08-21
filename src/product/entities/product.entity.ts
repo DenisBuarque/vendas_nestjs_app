@@ -12,8 +12,11 @@ export class ProductEntity {
     @Column({ type: 'varchar', name: 'description', nullable: false })
     description: string;
 
-    @Column({ type: 'varchar', name: 'price', nullable: false })
+    @Column({ type: 'integer', name: 'price', nullable: false })
     price: number;
+
+    @Column({ type: 'text', name: 'image', nullable: false })
+    image: string;
 
     @Column({ type: 'integer', name: 'categoryId' })
     categoryId?: number;

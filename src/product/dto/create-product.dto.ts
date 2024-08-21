@@ -16,7 +16,7 @@ export class CreateProductDto {
 
     @IsNotEmpty()
     @IsNumber({ maxDecimalPlaces: 2 })
-    readonly price: string;
+    readonly price: number;
 
     @IsString()
     @IsOptional()
