@@ -1,3 +1,4 @@
+import { CartEntity } from 'src/cart/entities/cart.entity';
 import { AddressEntity } from '../../address/entities/address.entity';
 import { Role } from '../../enums/role.enum';
 import {
@@ -5,6 +6,7 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -58,4 +60,7 @@ export class UserEntity {
   // Relation
   @OneToMany(() => AddressEntity, (address) => address.user)
   adresses: AddressEntity[];
+
+  @OneToOne(() => CartEntity, (cart) => cart.user)
+  cart: CartEntity;
 }

@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -25,13 +24,13 @@ import { Role } from 'src/enums/role.enum';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Roles(Role.Admin)
+  @Roles(Role.Admin, Role.User)
   @Post()
   async create(@Body() data: CreateUserDto): Promise<UserEntity> {
     return await this.userService.create(data);
   }
 
-  @Roles(Role.Admin, Role.User)
+  @Roles(Role.Admin)
   @Get()
   async findAll(): Promise<ReturnUserDto[]> {
     return (await this.userService.findAll()).map(
